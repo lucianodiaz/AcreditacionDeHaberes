@@ -250,8 +250,14 @@ namespace Micrositio_Acreditacion.Services
 
             //}
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clave"></param>
+        /// <returns></returns>
         public static string DecryptKeyBase64(string clave)
         {
+
             string Password = clave.Substring(clave.IndexOf("Password=")+9);
             Password = Password.Substring(0, Password.IndexOf(";"));
 

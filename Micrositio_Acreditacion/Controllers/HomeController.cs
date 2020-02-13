@@ -132,8 +132,8 @@ namespace Micrositio_Acreditacion.Controllers
                         //LA MILAGROSA S.A.   30507164303
                         //HUARPES S.R.L.    30681670595
 
-                        //Cuit = "30681670595",
-                        //RazonSocial = "HUARPES S.R.L."
+                        Cuit = "30681670595",
+                        RazonSocial = "HUARPES S.R.L."
                     };
                 }
             }
@@ -145,8 +145,10 @@ namespace Micrositio_Acreditacion.Controllers
                 {
                     //LA MILAGROSA S.A.   30507164303
                     //HUARPES S.R.L.    30681670595
-                   // Cuit = "30681670595",
+                    // Cuit = "30681670595",
                     //RazonSocial = "HUARPES S.R.L."
+                    Cuit = "30681670595",
+                    RazonSocial = "HUARPES S.R.L."
                 };
             }
            
@@ -231,10 +233,8 @@ namespace Micrositio_Acreditacion.Controllers
                 {
                     Global.SetEmpresa(da.GetLocalEmpresa(Global.getSession()));
 
-                    if (Global.GetEmpresa().Cuit == "" || Global.GetEmpresa().Cuit == null)
-                    {
-                        Global.SetEmpresa(da.AddEmpresa());
-                    }
+
+                    Global.SetEmpresa(da.AddEmpresa());
 
                     if (Global.GetEmpresa() == null)
                     {
