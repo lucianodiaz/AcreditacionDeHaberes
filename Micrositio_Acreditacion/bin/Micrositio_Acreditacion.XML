@@ -1,0 +1,1371 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Micrositio_Acreditacion</name>
+    </assembly>
+    <members>
+        <member name="T:Micrositio_Acreditacion.RouteConfig">
+            <summary>Configuracion de rutas</summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+             <summary>Registra el path de las rutas.</summary>
+             <param name="routes">la ruta por defecto es Home Index (Controlador Metodo).</param>
+             <example>
+               <code>public static void RegisterRoutes(RouteCollection routes)
+                   {
+                       routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            
+                       routes.MapRoute(
+                           name: "Default",
+                           url: "{controller}/{action}/{id}",
+                           defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                       );
+                   }</code>
+             </example>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Controllers.EmpleadoController">
+            <summary>
+              <para>Controlador Empleado</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Controllers.EmpleadoController.da">
+            <summary>
+              <para>
+            declaracion instancia de DataAccess</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Controllers.EmpleadoController.log">
+            <summary>
+              <para>
+             Declaracion Instancia de log4net </para>
+            </summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.SetAcreditacion(System.String)">
+            <summary>Sets the acreditacion.</summary>
+            <param name="acreditacion">acreditacion.</param>
+            <example>
+              <code>  public void SetAcreditacion(string acreditacion)
+                    {
+                        if (acreditacion == null)
+                        {
+                            acreditacion = "";
+                        }
+                        if (Global.GetGlobalAcreditacion() == "" or Global.GetGlobalAcreditacion() == null)
+                        {
+                            if (acreditacion != "" or acreditacion != null)
+                            {
+                                Global.SetGlobalAcreditacion(acreditacion);
+                            }
+                        }
+                        else
+                        {
+                            if (Global.GetGlobalAcreditacion() != acreditacion and acreditacion != "")
+                            {
+                                Global.SetGlobalAcreditacion(acreditacion);
+                            }
+                        }
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.Index">
+            <summary>
+              <para>
+            Index devuelve vista principal.
+            Ademas:</para>
+              <para>- setea Global acreditacion en vacio("")</para>
+              <para>-setea Global fecha en vacio("")</para>
+            </summary>
+            <returns>view Index</returns>
+            <example>
+              <code>  public ActionResult Index()
+                    {
+                        Global.SetGlobalAcreditacion("");
+                        Global.setFecha("");
+                        return View();
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.CargarEmpleadosGral(System.String,System.String)">
+            <summary>Cargar el empleados gral.</summary>
+            <param name="acreditacion">The acreditacion.</param>
+            <returns>view Indez y lista de empleados(true si es general)</returns>
+            <example>
+              <code>public ActionResult CargarEmpleadosGral(string acreditacion)
+                  {
+                      SetAcreditacion(acreditacion);
+                      return View(da.ListEmpleado(true).ToList());
+                  }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.fechaEdit(System.DateTime)">
+             <summary>Setea la fecha en global y redirecciona segun se seleccione para que metodo se utilizara</summary>
+             <param name="d">d (date)</param>
+             <returns>redirecciona a cargaIndividual o CargaMaiva de acuerdo a la condicion</returns>
+             <example>
+               <code>[HttpPost]
+               public ActionResult fechaEdit(DateTime d)
+               {
+            
+                   string fecha = d.ToString("ddMMyy").Trim();
+            
+                   Global.setFecha(fecha);
+            
+                   if(Global.GetCarga())
+                   {
+                       return RedirectToAction("CargaMasiva");
+                   }
+                   else
+                   {
+                       return RedirectToAction("CargaIndividual");
+                   }
+            
+               }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.Report(System.String,Micrositio_Acreditacion.Models.Empresa)">
+            <summary>Realiza el reporte de los datos de la empresa obtenida con el token</summary>
+            <param name="TipoAcre">TipoAcre</param>
+            <param name="emp">emp</param>
+            <returns>
+              <para>vista</para>
+            </returns>
+            <example>
+              <code>Report</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.New(Micrositio_Acreditacion.Models.Empleado)">
+            <summary>Genera un nuevo empleado</summary>
+            <param name="e">e</param>
+            <returns>vista empleadoGral + lista empleados</returns>
+            <example>
+              <code>[HttpPost]
+                   public ActionResult New(Empleado e)
+                   {
+                       e = da.AddNewEmpleado(e);
+                       return View("CargarEmpleadosGral", da.ListEmpleado(true).ToList());
+                   }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.EditFunction(Micrositio_Acreditacion.Models.Empleado)">
+             <summary>Edita el empleado</summary>
+             <param name="e">e</param>
+             <returns>view index con lista empleado</returns>
+             <example>
+               <code>  [HttpPost]
+                     public ActionResult EditFunction(Empleado e)
+                     {
+                         da.EditEmpleado1to1(e);
+            
+                         if(e.Importe != null)
+                         {
+                             if(Global.GetCarga())
+                             {
+                                 return RedirectToAction("CargaMasivaResultado");
+                             }
+                             else
+                             {
+                                 return RedirectToAction("CargaIndividual");
+                             }
+            
+                         }
+                         else
+                         {
+                             return View("CargarEmpleadosGral", da.ListEmpleado(true).ToList());
+                         }
+            
+                         
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.Edit(Micrositio_Acreditacion.Models.Empleado)">
+            <summary>redirige a edit function</summary>
+            <param name="e">e</param>
+            <returns>vista editFunction</returns>
+            <example>
+              <code> public ActionResult Edit(Empleado e)
+                    {
+                        e = da.GetEmpleado(e);
+                        return View("EditFunction", e);
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.Delete(System.String)">
+            <summary>borra empleado de manera individual o multiple</summary>
+            <param name="deleteInput">deleteinput</param>
+            <returns>view cargaEmpleadosGral y lista de empleados</returns>
+            <example>
+              <code>public ActionResult Delete(string deleteInput)
+                   {
+                       string[] ArrayId = deleteInput.Split(',');</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.Selector(System.String,System.String)">
+             <summary>
+               <para>
+             selecciona el tipo de acreditacion y si la carga es individual o masiva</para>
+               <para>
+                 <font color="#333333">redirecciona a sus vistas seleccionadas</font>
+               </para>
+             </summary>
+             <param name="acreditacion">acreditacion</param>
+             <param name="radio">radio</param>
+             <returns>vista</returns>
+             <example>
+               <code>public ActionResult Selector(string acreditacion,string radio)
+                    {
+            
+                        Global.setFecha("");
+                        SetAcreditacion(acreditacion);
+            
+                        if(radio.ToLower() == "manual")
+                        {
+                            Global.setCarga(false);
+                            return RedirectToAction("CargaIndividual");
+                        }
+                        else if(radio.ToLower() == "masiva")
+                        {
+                            Global.setCarga(true);
+                            return RedirectToAction("CargaMasiva");
+                        }
+            
+                        return RedirectToAction("Index", "Home");
+                    }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.CargaIndividual">
+            <summary>Carga de empleado individual</summary>
+            <returns>vista cargaIndividual + lista</returns>
+            <example>
+              <code> public ActionResult CargaIndividual()
+                    {
+                        if(Global.getFecha() != "" and Global.getFecha() != null)
+                        {
+                            da.AddEmpleadosAcreditacion();
+                        }
+                        return View(da.ListEmpleado(false).ToList());
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.CargaMasiva">
+             <summary>Vista y seteo de carga masiva</summary>
+             <returns>vista cargaMasiva</returns>
+             <example>
+               <code>
+                 public ActionResult CargaMasiva()
+                     {
+                         if (Global.getFecha() != "" and Global.getFecha() != null)
+                         {
+                             da.AddEmpleadosAcreditacion();
+                             UpdateMasivo();
+                         }
+                         return View();
+                     }
+            
+             </code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.AceptCargaMasiva">
+            <summary>acepta el archivo excel para ser visto en una grilla</summary>
+            <returns>redirige a CargaMasivaResultado</returns>
+            <example>
+              <code>public ActionResult AceptCargaMasiva()
+                    {
+                        Global.setPreview(null);
+                        da.AceptCM(true);
+                        return RedirectToAction("CargaMasivaResultado");
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.CancelCargaMasiva">
+            <summary>Cancela la carga masiva si hay problemas  con el archivo excel</summary>
+            <returns>redirige a cargaMasiva</returns>
+            <example>
+              <code>
+                 public ActionResult CancelCargaMasiva()
+                    {
+                        Global.setPreview(null);
+                        da.AceptCM(false);
+                        return RedirectToAction("CargaMasiva");
+                    }
+            </code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.CargaMasivaResultado">
+            <summary>lista y muestra la carga masiva despues de procesar el excel</summary>
+            <returns>vista CargamasivaResultado</returns>
+            <example>
+              <code>    public ActionResult CargaMasivaResultado()
+                    {
+                        return View(da.ListEmpleado(false).ToList());
+                    }
+            </code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.Resumen">
+            <summary>resumen de los datos de la empresa tomada por el token</summary>
+            <returns>vista resumen</returns>
+            <example>
+              <code>  public ActionResult Resumen()
+                    {
+                        Global.setPreview(da.GetShortPreview());
+                        return View();
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.prueba(System.Int32)">
+            <summary>sselecciona los ingresados rechazados y aceptados</summary>
+            <param name="a">a</param>
+            <example>
+              <code>public void prueba(int a)
+                 {
+                     da.GenerarReportePreview(a);
+                 }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.CargaMasivabackup">
+            <summary>carga el empleado de manera masiva ssegun el archivo excel</summary>
+            <returns>vista</returns>
+            <example>cargaMasiva
+            <code>CargaMasivabackup</code></example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.UpdateMasivo">
+            <summary>realiza un update masivo de los empleados</summary>
+            <returns>vista</returns>
+            <example>
+              <code>UpdateMasivo</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.GenerarTxt">
+            <summary>Genera el txt</summary>
+            <example>
+              <code> public void GenerarTxt()
+                    {
+                        da.GenerarTxt(); 
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.AnalisisReporte(System.String,System.Nullable{System.Int32})">
+            <summary>genera el analisis mensual del reporte segun el tipo de acreditacion</summary>
+            <param name="acreditacion">acreditacion</param>
+            <param name="i">i</param>
+            <returns>vista</returns>
+            <example>
+              <code>public ActionResult AnalisisReporte(string acreditacion, int? i)
+                   {
+                       SetAcreditacion(acreditacion);
+                       return View(da.GetReporte("").ToList().ToPagedList(i ?? 1,6));
+                   }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.GenerarReporte(System.String)">
+             <summary>genera el reporte mensual en excel</summary>
+             <param name="fecha">fecha</param>
+             <returns>vista analisisReporte</returns>
+             <example>
+               <code>[HttpPost]
+                    public ActionResult GenerarReporte(string fecha)
+                    {
+            
+                        da.GetReporte(fecha);
+                        return RedirectToAction("AnalisisReporte");
+                    }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.manualPDF(System.String)">
+            <summary>
+            Manuals the PDF.
+            </summary>
+            <param name="fileName">Name of the file.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.EmpleadoController.archivoExcel(System.String)">
+            <summary>
+            Archivoes the excel.
+            </summary>
+            <param name="fileName">Name of the file.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Controllers.HomeController">
+            <summary>
+              <para>controlador de Home</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Controllers.HomeController.conection">
+            <summary>
+              <para>
+             connection string</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Controllers.HomeController.da">
+            <summary>  el data access</summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Controllers.HomeController.log">
+            <summary> log4net</summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.Request_Url(System.String)">
+             <summary>requiere la url para setear el token obtenido.</summary>
+             <param name="token">token.</param>
+             <returns>vista index</returns>
+             <example>
+               <code> public Empresa Request_Url(string token)
+                     {
+            
+                         log.Info("Se ha generado el siguiente token" + token);
+                         string url = WebConfigurationManager.AppSettings["PORTAL_API_URL"]+token;
+                         WebRequest request = HttpWebRequest.Create(url);
+                         try
+                         {
+                             log.Info("entro al try con la url lista: " + url);
+                             WebResponse response = request.GetResponse();
+                             StreamReader reader = new StreamReader(response.GetResponseStream());
+                             string responseText = reader.ReadToEnd();
+                             JObject resultado = JObject.Parse(responseText);
+                             JToken success = resultado["Success"];
+            
+            
+                             log.Info(success.ToString());
+            
+                             // en el caso que el token este con los datos solicitados
+                             if (success.ToString() == "True")
+                             {
+                                 log.Info("Completo los datos");
+                                 log.Info((string)resultado["razonsocial"]);
+                                 log.Info((string)resultado["Cuit"]);
+                                 return new Empresa()
+                                 {
+                                     Cuit = (string)resultado["CuitCuilCdi"],
+                                     RazonSocial = (string)resultado["razonsocial"]
+                                 };
+                             }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.Login(System.String)">
+             <summary>inicia seion con el token especificado token.</summary>
+             <param name="token">
+               <para>
+             Recibe el token </para>
+               <para>Si esta lleno entonces setea la conexion comparando con la base de datos</para>
+               <para>sino redirecciona a httpnotfound</para>
+             </param>
+             <returns>vista index</returns>
+             <example>
+               <code> public ActionResult Login(string token)
+                     {
+                         try
+                         {
+                             Utilidades.SetCon(conection);
+                         }
+                         catch (Exception e)
+                         {
+                             log.Info(e.Message);
+                             Global.setError(e.Message);
+                             throw;
+                         }
+            
+                         Empresa empresa = Request_Url(token);
+            
+                         log.Info("los datos de la empresa son los siguientes: Cuit: " + empresa.Cuit + "Razon Social: " + empresa.RazonSocial);
+                         if(empresa.Cuit != null)
+                         {
+                             Global.setSession(empresa.Cuit,empresa.RazonSocial);
+            
+                             if (Global.getSession() != "" || Global.getSession() != null)
+                             {
+                                 Global.SetEmpresa(da.GetLocalEmpresa(Global.getSession()));
+            
+                                 if (Global.GetEmpresa().Cuit == "" || Global.GetEmpresa().Cuit == null)
+                                 {
+                                     Global.SetEmpresa(da.AddEmpresa());
+                                 }
+            
+                                 if (Global.GetEmpresa() == null)
+                                 {
+                                     return View("Index");
+                                 }
+                             }
+                             return View("Index");
+                         }
+                         else
+                         {
+                             log.Info("El usuario no se ha podido logear");
+                             return HttpNotFound();
+                         }
+            
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.Index">
+            <summary>
+              <para>en index setea el tipo de acreditacion global en vacio </para>
+              <para>y la fecha en vacio.</para>
+              <para>si no se ha iniciado sesion pasa a login sin parametros para redirigir fuera de la pagina</para>
+            </summary>
+            <returns>vista index</returns>
+            <example>
+              <code>public ActionResult Index()
+                    {         
+                        Global.SetGlobalAcreditacion("");
+                        Global.setFecha("");
+                        //En el caso que la variable de sesion este vacia redirige a la funcion de login()
+                        if(Global.getSession() == null)
+                        {
+                            Login("");
+                        }
+                        return View();
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.GuardarEdit(Micrositio_Acreditacion.Models.Empresa)">
+            <summary>Guardars the edit. no usado</summary>
+            <param name="e">The e.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.Edit(Micrositio_Acreditacion.Models.Empresa,System.String)">
+            <summary>Edits the specified e.
+            edit empresa no usado</summary>
+            <param name="e">The e.</param>
+            <param name="TipoAcred">The tipo acred.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.Delete(Micrositio_Acreditacion.Models.Empresa)">
+            <summary>
+              <para>
+             Deletes the specified e.
+            empresa no usado</para>
+            </summary>
+            <param name="e">The e.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.Logout">
+            <summary>realiza el cierre de sesion. limpia todas las variables globales de sesion de la empresa</summary>
+            <example>
+              <code> public void Logout()
+                    {
+                        log.Info("Se ha terminado la sesion correctamente");
+                        Global.setSession("", "");
+                        Response.Redirect("https://www.bancosanjuan.com/EnModoOn/");
+                        Response.End();
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.SeleccionarConvenioView">
+            <summary>vista para seleccionar el convenio . potr defecto el preview eta en null y la carga masiva en false</summary>
+            <returns>vista seleccionar convenio</returns>
+            <example>
+              <code>  public ActionResult SeleccionarConvenioView()
+                    {
+                        Global.setPreview(null);
+                        da.AceptCM(false);
+                        return View();
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.ServicioDatos">
+            <summary>redirecciona a vista serviciodatos</summary>
+            <returns>vista servicio datos</returns>
+            <example>
+              <code> public ActionResult ServicioDatos()
+                    {
+                        return View();
+                    }</code>
+            </example>
+        </member>
+        <member name="T:Micrositio_Acreditacion.MvcApplication">
+            <summary>Inicia la aplicacion</summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.MvcApplication.Application_Start">
+            <summary>Inicia la aplicacion.</summary>
+            <example>
+              <code> protected void Application_Start()
+                    {
+                        AreaRegistration.RegisterAllAreas();
+                        RouteConfig.RegisterRoutes(RouteTable.Routes);
+                    }</code>
+            </example>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.Empleado">
+            <summary></summary>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Id">
+            <summary>Gets o sets el Id.</summary>
+            <value>Id.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Nombre">
+            <summary>Gets o sets el nombre.</summary>
+            <value>Nombre.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Dni">
+            <summary>Gets o sets el dni.</summary>
+            <value>Dni.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Cuil">
+            <summary>Gets o sets el cuil.</summary>
+            <value>Cuil.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Sucursal">
+            <summary>Gets o sets la sucursal.</summary>
+            <value>Sucursal.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Cuenta">
+            <summary>Gets o sets la cuenta.</summary>
+            <value>Cuenta.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Fecha">
+            <summary>Gets o sets la fecha.</summary>
+            <value>Fecha.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.FechaFormat">
+            <summary>Gets o sets la fechaFormat.</summary>
+            <value>fechaFormat.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Importe">
+            <summary>Gets o sets el importe.</summary>
+            <value>Importe.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.TipoCuenta">
+            <summary>Gets o sets el tipo cuenta.</summary>
+            <value>tipoCuenta.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.TipoAcreditacion">
+            <summary>Gets o sets el tipo acreditacion.</summary>
+            <value>tipoAcreditacion.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.CodEmp">
+            <summary>Gets o sets el cod emp.</summary>
+            <value>codEmp</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.CBU">
+            <summary>Gets o sets el cbu.</summary>
+            <value>CBU.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.Activo">
+            <summary>Gets o sets un valor indicando si <see cref="T:Micrositio_Acreditacion.Models.Empleado"/> esta activo.</summary>
+            <value>
+              <c>true</c> si esta activo; sino, <c>false</c>.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empleado.EstadoCuenta">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.Empresa">
+            <summary>Modelo Empresa</summary>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Id">
+            <summary>Gets o sets el Id.</summary>
+            <value>Id.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Cuit">
+            <summary>Gets o sets el cuit.</summary>
+            <value>Cuit.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.RazonSocial">
+            <summary>Gets o sets la razon social.</summary>
+            <value>RazonSocial</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Domicilio">
+            <summary>Gets o sets el domicilio.</summary>
+            <value>Domicilio.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.NumeroDeCta">
+            <summary>Gets o sets el numero de cta.</summary>
+            <value>NumeroDeCta.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Email">
+            <summary>Gets o sets el email.</summary>
+            <value>Email.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Telefono">
+            <summary>Gets o sets el telefono.</summary>
+            <value>Telefono.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.CodEmp">
+            <summary>Gets o sets el codigo empresa.</summary>
+            <value>CodEmp.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.nConvenio">
+            <summary>Gets o sets el numero de convenio.</summary>
+            <value>nConvenio.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.TipoCuenta">
+            <summary>Gets o sets el tipo cuenta.</summary>
+            <value>TipoCuenta.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.TipoAcreditacion">
+            <summary>Gets o sets el tipo acreditacion.</summary>
+            <value>TipoAcreditacion.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Sucursal">
+            <summary>Gets o sets la sucursal.</summary>
+            <value>Sucursal.</value>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.Preview">
+            <summary>Modelo Preview</summary>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.ingresados">
+            <summary>Gets o sets los ingresados.</summary>
+            <value>ingresados.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.Montoingresado">
+            <summary>Gets o sets el monto ingresado.</summary>
+            <value> Montoingresado.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.aceptados">
+            <summary>Gets o sets los aceptados.</summary>
+            <value> aceptados.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.Montoaceptados">
+            <summary>Gets o sets el montoa ceptados.</summary>
+            <value> Montoaceptados.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.rechazados">
+            <summary>Gets o sets los rechazados.</summary>
+            <value> rechazados.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.Montorechazados">
+            <summary>Gets o sets el monto rechazados.</summary>
+            <value> Montorechazados.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Preview.fecha">
+            <summary>Gets o sets la fecha.</summary>
+            <value>fecha.</value>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.Sucursales">
+            <summary>Modelo Sucursales</summary>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Sucursales.Id">
+            <summary>Gets o sets el Id.</summary>
+            <value>Id.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Sucursales.Sucursal">
+            <summary>Gets o sets la sucursal.</summary>
+            <value>Sucursal.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.Sucursales.Descripcion">
+            <summary>Gets o sets la descripcion.</summary>
+            <value>Descripcion.</value>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.TipoAcreditacion">
+            <summary>Modelo TipoAcreditacion</summary>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.TipoAcreditacion.Id">
+            <summary>Gets o sets el Id.</summary>
+            <value>Id.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.TipoAcreditacion.Codigo">
+            <summary>Gets o sets el codigo.</summary>
+            <value>Codigo.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.TipoAcreditacion.Denominacion">
+            <summary>Gets o sets la denominacion.</summary>
+            <value>Denominacion.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.TipoAcreditacion.DenoReducida">
+            <summary>Gets o sets la denominacion reducida.</summary>
+            <value>DenoReducida.</value>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.TipoCuenta">
+            <summary>Modelo TipoCuenta</summary>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.TipoCuenta.Id">
+            <summary>Gets o sets el Id.</summary>
+            <value>Id.</value>
+        </member>
+        <member name="P:Micrositio_Acreditacion.Models.TipoCuenta.Denominacion">
+            <summary>Gets o sets la denominacion.</summary>
+            <value>Denominacion.</value>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Models.DataAccess">
+            <summary></summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Models.DataAccess.log">
+            <summary>
+            El log4net
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Models.DataAccess.provider">
+            <summary>
+              <para>
+             The providersiempre null</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Models.DataAccess.Format">
+            <summary>
+            El formato de la fecha
+            </summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.AddEmpresa">
+             <summary>añade una nueva 
+             
+             </summary>
+             <returns>new empresa</returns>
+             <example>
+               <code>public Empresa AddEmpresa()
+                    {
+            
+                        try
+                        {
+                            //selector, Cuit, razon social, Domicilio, NumCuenta, Email, telefono, CuitSession, codEmpstring CMD = string.Format("exec SP_abm_empresa '{0}','{1}','{2}','{3}','{4}'", 1,Global.getSession(),Global.getRSSession().ToUpper(), Global.getSession(), "");
+                            DataSet ds = Utilidades.Exec(CMD);
+            
+                            return new Empresa()
+                            {
+                                Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]),
+                                Cuit = ds.Tables[0].Rows[0]["CUIT"].ToString().Trim().ToUpper(),
+                                RazonSocial = ds.Tables[0].Rows[0]["RaSoc"].ToString().Trim().ToUpper(),
+                                CodEmp = ds.Tables[0].Rows[0]["CodEmpresa"].ToString().Trim().ToUpper(),
+                                nConvenio = ds.Tables[0].Rows[0]["nConvenio"].ToString(),
+                                NumeroDeCta = ds.Tables[0].Rows[0]["NumCuenta"].ToString(),
+                                TipoCuenta = ds.Tables[0].Rows[0]["TipoCue"].ToString(),
+                                Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString()
+                            };
+            
+                        }
+                        catch (Exception)
+                        {
+                            return null;
+                            throw;
+                        }
+            
+            
+            
+            
+            
+                    }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.GetLocalEmpresa(System.String)">
+             <summary>reliza el get de empresa</summary>
+             <param name="Cuit">cuit</param>
+             <returns>new empresa e</returns>
+             <example>
+               <code>
+              public Empresa GetLocalEmpresa(string Cuit)
+                     {
+                         try
+                         {
+                             string CMD = string.Format("Select * from Empresas where CUIT = '{0}'", Cuit);
+                             DataSet ds = Utilidades.Exec(CMD);
+            
+                             return new Empresa()
+                             {
+                                 Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]),
+                                 Cuit = ds.Tables[0].Rows[0]["CUIT"].ToString().Trim().ToUpper(),
+                                 RazonSocial = ds.Tables[0].Rows[0]["RaSoc"].ToString().Trim().ToUpper(),
+                                 CodEmp = ds.Tables[0].Rows[0]["CodEmpresa"].ToString().Trim().ToUpper(),
+                                 nConvenio = ds.Tables[0].Rows[0]["nConvenio"].ToString(),
+                                 NumeroDeCta = ds.Tables[0].Rows[0]["NumCuenta"].ToString(),
+                                 TipoCuenta = ds.Tables[0].Rows[0]["TipoCue"].ToString(),
+                                 Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString()
+            
+                             };
+                         }
+                         catch (Exception)
+                         {
+                             return new Empresa()
+                             { };
+                             throw;
+                         }
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.ListBoxSuc">
+            <summary>lista las sucursales</summary>
+            <returns>lista de sucursales</returns>
+            <example>
+              <code> ListBoxSuc()
+            </code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.ListBoxAcre">
+            <summary>lista el tipo de acreditacion</summary>
+            <returns>lista tipo acreditacion</returns>
+            <example>
+              <code>code</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.ListBoxCuenta">
+            <summary>lista el tipo de cuenta</summary>
+            <returns>lista de tipo cuenta</returns>
+            <example>coding
+            <code></code></example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.ListEmpleado(System.Boolean,System.Int32)">
+            <summary>lista los empleados</summary>
+            <param name="general">if set to <c>true</c> [Trae lista empleados general]<c>false</c>.  [Trae lista empleados individual o masiva]</param>
+            <returns>lista empleados</returns>
+            <example>coding
+            <code></code></example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.ListEmpleadoReporte">
+            <summary>lista el empleado para el reporte</summary>
+            <returns>lista empleado</returns>
+            <example>code
+            <code></code></example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.AddNewEmpleado(Micrositio_Acreditacion.Models.Empleado)">
+             <summary>alta de empleado</summary>
+             <param name="e">e</param>
+             <returns>new Empleado</returns>
+             <example>
+               <code>public Empleado AddNewEmpleado(Empleado e)
+                     {
+                         if (e.Fecha == null)
+                         {
+                             e.Fecha = "";
+                         }
+                         else
+                         {
+                             //setea la fecha
+                             e.Fecha = e.FechaFormat.ToString("ddMMyy").Trim();
+                         }
+            
+            
+            
+            
+                         if(e.Importe == null)
+                         {
+                             e.Importe = "";
+                         }
+                         // 0 NEW - 1 EDIT - 2 NEW MASIVO - 3 UPDATE MASIVO - 4 DELETEstring CMD = string.Format
+                 ("exec SP_abm_empleado '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}'",0,e.Nombre.ToUpper(),e.Dni,e.Cuil,e.Sucursal,e.Cuenta,e.Fecha, e.Importe, e.TipoCuenta,Global.GetGlobalAcreditacion(),e.CBU,true,Global.GetEmpresa().CodEmp,"");
+                         try
+                         {
+                             DataSet ds = Utilidades.Exec(CMD);
+                             return new Empleado()
+                             {
+                                 Id = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"]),
+                                 Nombre = ds.Tables[0].Rows[0]["NombreEmp"].ToString().Trim().ToUpper(),
+                                 Dni = ds.Tables[0].Rows[0]["DNI"].ToString().Trim().ToUpper(),
+                                 Cuil = ds.Tables[0].Rows[0]["Cuil"].ToString().Trim().ToUpper(),
+                                 Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString().Trim().ToUpper(),
+                                 Cuenta = ds.Tables[0].Rows[0]["Cue"].ToString().Trim().ToUpper(),
+                                 Fecha = ""/*ds.Tables[0].Rows[0]["Fecha"].ToString().Trim().ToUpper()*/,
+                                 /*FechaFormat = e.FechaFormat,*/
+                                 Importe = ""/*ds.Tables[0].Rows[0]["Importe"].ToString().Trim().ToUpper()*/,
+                                 TipoCuenta = ds.Tables[0].Rows[0]["TipoCue"].ToString().Trim().ToUpper(),
+                                 TipoAcreditacion = ds.Tables[0].Rows[0]["TipoAcre"].ToString().Trim().ToUpper(),
+                                 CodEmp = ds.Tables[0].Rows[0]["CodEmp"].ToString().Trim().ToUpper(),
+                                 Activo = Convert.ToBoolean(ds.Tables[0].Rows[0]["activo"].ToString()),
+                                 CBU = ds.Tables[0].Rows[0]["CBU"].ToString()
+                             };
+                         }
+                         catch (Exception)
+                         {
+                             return new Empleado()
+                             {
+                             };
+                             throw;
+                         }
+            
+                     }</code>
+             </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Micrositio_Acreditacion.Models.DataAccess.GetEmpleado(Micrositio_Acreditacion.Models.Empleado)" -->
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.IsNumeric(System.Object)">
+             <summary>determina si el parametro enviado  es numeric.</summary>
+             <param name="Expression">expression.</param>
+             <returns>
+               <c>true</c> si la expression es numeric; en otro caso, <c>false</c>.</returns>
+             <example>
+               <code>  public bool IsNumeric(object Expression)
+                     {
+            
+                         bool isNum;
+            
+                         double retNum;
+            
+                         isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            
+                         return isNum;
+            
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.EditEmpleado1to1(Micrositio_Acreditacion.Models.Empleado)">
+            <summary>edita el empleado</summary>
+            <param name="e">e</param>
+            <example>
+            <code>coding</code></example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.ListEmpleadoFilterSuc(System.String,System.String)">
+            <summary>Lista el empleado filtrado por sucursales</summary>
+            <param name="selector">selector.</param>
+            <param name="consulta">consulta.</param>
+            <returns>lista empleados</returns>
+            <example>
+              <code>
+            coding
+            </code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.DeleteEmpleado(Micrositio_Acreditacion.Models.Empleado)">
+            <summary>Actualiza el estado de el empleado a  inactivo</summary>
+            <param name="e">e</param>
+            <example>
+              <code> public void DeleteEmpleado(Empleado e)
+                    {
+                        string CMD = string.Format
+                        ("exec SP_abm_empleado '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}'", 4, e.Nombre.ToUpper(), e.Dni, e.Cuil, e.Sucursal.ToUpper(), e.Cuenta, e.Fecha, e.Importe, e.TipoCuenta.ToUpper(), Global.GetGlobalAcreditacion(),e.CBU,e.Activo, Global.GetEmpresa().CodEmp, e.Id);
+                        DataSet ds = Utilidades.Exec(CMD);
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.AddEmpleadosAcreditacion">
+             <summary>Agrega empleado a la parte de acreditaccion</summary>
+             <example>
+               <code>  public void AddEmpleadosAcreditacion()
+                     {
+                         string CMD = string.Format
+                         ("exec SP_abm_empleado '{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}'", 2, "", "","", "", "", Global.getFecha(), "", "", Global.GetGlobalAcreditacion(), "", "", Global.GetEmpresa().CodEmp, null);
+                         try
+                         {
+                             DataSet ds = Utilidades.Exec(CMD);
+                         }
+                         catch(Exception e)
+                         {
+                             Global.setError(e.Message);
+                         }
+            
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.GetPreview(System.Data.DataSet)">
+            <summary>muestra los ingresados aceptados y rechazados de el archivo excel</summary>
+            <param name="d">d</param>
+            <returns>new Preview</returns>
+            <example>
+              <code> public Preview GetPreview(DataSet d)
+                    {
+                        return new Preview()
+                        {
+                            ingresados = d.Tables[0].Rows[0]["Ingresados"].ToString(),
+                            aceptados = d.Tables[1].Rows[0]["Aceptados"].ToString(),
+                            rechazados = d.Tables[2].Rows[0]["Rechazada"].ToString(),
+                            Montoingresado = d.Tables[3].Rows[0]["Totali"].ToString(),
+                            Montoaceptados = d.Tables[4].Rows[0]["Totala"].ToString(),
+                            Montorechazados = d.Tables[5].Rows[0]["Totalr"].ToString()
+                        };
+                    }</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.GetShortPreview">
+             <summary>
+               <para>
+             hace el preview corto para la acreditacion mensual</para>
+               <para>Muestra el total de ingresados y la suma de los importes</para>
+             </summary>
+             <returns>new preview</returns>
+             <example>
+               <code>   public Preview GetShortPreview()
+                     {
+                         string CMD = string.Format("select COUNT(*) as 'Aceptados' from EmpleadosAcreditacion where Fecha = '{0}' and CodEmp = '{1}' and TipoAcre = (select Cod from TipoAcre where Deno = '{2}' and Importe > 0)", Global.getFecha(),Global.GetEmpresa().CodEmp,Global.GetGlobalAcreditacion());
+                         DataSet d = Utilidades.Exec(CMD);
+            
+                         string CMD2 = string.Format("SELECT SUM(cast(IMPORTE as numeric(18,2))) as 'Totala' from EmpleadosAcreditacion where Fecha = '{0}' and CodEmp = '{1}' and TipoAcre = (select Cod from TipoAcre where Deno = '{2}')", Global.getFecha(), Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion());
+                         DataSet ds = Utilidades.Exec(CMD2);
+                         return new Preview()
+                         {
+                             aceptados = d.Tables[0].Rows[0]["Aceptados"].ToString(), 
+                             Montoaceptados = ds.Tables[0].Rows[0]["Totala"].ToString()
+                         };
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.AceptCM(System.Boolean)">
+             <summary>Acepta la carga maiva</summary>
+             <param name="s">if set to <c>true</c> [carga masiva con fecha de acreditacion].</param>
+             <example>
+               <code>      public void AceptCM(bool s)
+                     {
+                         if(s)
+                         {
+                             string CMD = string.Format("Exec SP_CargaMasiva_Empleados '{0}','{1}','{2}','{3}', '{4}'", 3, Global.getSession(), Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion(), Global.getFecha());
+                             DataSet ds = Utilidades.Exec(CMD);
+                         }
+                         else
+                         {
+                             string CMD = string.Format("Exec SP_CargaMasiva_Empleados '{0}','{1}','{2}','{3}', '{4}'",4, Global.getSession(), Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion(), Global.getFecha());
+            
+                             DataSet ds = Utilidades.Exec(CMD);
+                         }
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.GenerarReportePreview(System.Int32)">
+             <summary>Acepta la carga masiva para construir los campos de ingresados aceptados y rechazados</summary>
+             <param name="selector">selector</param>
+             <example>
+               <code>public void AceptCM(bool s)
+               {
+                   if(s)
+                   {
+                       string CMD = string.Format("Exec SP_CargaMasiva_Empleados '{0}','{1}','{2}','{3}', '{4}'", 3, Global.getSession(), Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion(), Global.getFecha());
+                       DataSet ds = Utilidades.Exec(CMD);
+                   }
+                   else
+                   {
+                       string CMD = string.Format("Exec SP_CargaMasiva_Empleados '{0}','{1}','{2}','{3}', '{4}'",4, Global.getSession(), Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion(), Global.getFecha());
+            
+                       DataSet ds = Utilidades.Exec(CMD);
+                   }
+               }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.GenerarTxt">
+            <summary>Genera el archivo txt</summary>
+            <example>
+              <code>codigo</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Models.DataAccess.GetReporte(System.String)">
+            <summary>Gets the reporte.</summary>
+            <param name="fecha">The fecha.</param>
+            <returns>new Preview</returns>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Services.Global">
+            <summary>
+              <para>Variables globales</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Services.Global.sucursales">
+            <summary>
+              <para>
+             lista sucursales global</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Services.Global.acredi">
+            <summary>  el tipo acreditacion global</summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Services.Global.cuenta">
+            <summary>  el tipo de cuenta global</summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Services.Global.log">
+            <summary>
+              <para>
+            Gets the image.
+            </para>
+            </summary>
+            <returns>image</returns>
+            
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setPreview(Micrositio_Acreditacion.Models.Preview)">
+            <summary>Sets el preview.</summary>
+            <param name="p">The p.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.getPreview">
+            <summary>Gets el preview.</summary>
+            <returns>preview</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setCarga(System.Boolean)">
+            <summary>Sets la carga.</summary>
+            <param name="masiva">if set to <c>true</c> [masiva] else [update].</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.GetCarga">
+            <summary>Gets la carga.</summary>
+            <returns>Cargamassiva</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setFecha(System.String)">
+            <summary>Sets la fecha.</summary>
+            <param name="fecha"> fecha.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.getFecha">
+            <summary>Gets la fecha.</summary>
+            <returns>fechaAcreditacion</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.FechaForm">
+            <summary>Formatea la fecha</summary>
+            <returns>fechaAcreditacion</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setSession(System.String,System.String)">
+            <summary>Sets la session cuit y razon social .</summary>
+            <param name="s">s.</param>
+            <param name="rs">rs.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.getSession">
+            <summary>Gets la session cuit.</summary>
+            <returns>Session</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.getRSSession">
+            <summary>Gets la session razon social.</summary>
+            <returns>razonSocial</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setError(System.String)">
+            <summary>Sets el mensaje de error error.</summary>
+            <param name="msg"> msg.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.getError">
+            <summary>Gets el menaje de error.</summary>
+            <returns>error</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.SetGlobalAcreditacion(System.String)">
+            <summary>Sets la variable  global tipo acreditacion.</summary>
+            <param name="a">a.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.GetGlobalAcreditacion">
+            <summary>Gets la variable global tipo acreditacion.</summary>
+            <returns>TipoAcreditacion</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.SetEmpresa(Micrositio_Acreditacion.Models.Empresa)">
+            <summary>Sets la empresa.</summary>
+            <param name="e"> e.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.GetEmpresa">
+            <summary>Gets la empresa.</summary>
+            <returns>empresa</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.SetSucursal(System.Collections.Generic.List{Micrositio_Acreditacion.Models.Sucursales})">
+            <summary>Sets la sucursal.</summary>
+            <param name="s">s.</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.GetSucursal">
+            <summary>Gets la sucursal.</summary>
+            <returns>sucursales</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setAcreditacion(System.Collections.Generic.List{Micrositio_Acreditacion.Models.TipoAcreditacion})">
+            <summary>Sets el tipo acreditacion.</summary>
+            <param name="t">t</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.GetAcreditacion">
+            <summary>Gets el tipo  acreditacion.</summary>
+            <returns>acredi</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.setCuenta(System.Collections.Generic.List{Micrositio_Acreditacion.Models.TipoCuenta})">
+            <summary>Sets la cuenta.</summary>
+            <param name="c"> c</param>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.GetCuenta">
+            <summary>Gets la cuenta.</summary>
+            <returns>cuenta//tipo de cuenta</returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.DeleteAllFiles">
+            <summary>Deletes all files. para excel</summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Global.DecryptKeyBase64(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="clave"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Micrositio_Acreditacion.Services.Excel">
+            <summary>
+              <para>funcion excel</para>
+            </summary>
+        </member>
+        <member name="F:Micrositio_Acreditacion.Services.Excel.log">
+            <summary>  el log
+            de error</summary>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Excel.GetTableExcel(System.String,System.String)">
+             <summary>arma la tabla excel</summary>
+             <param name="strFileName">strfileName</param>
+             <param name="extencion">extension</param>
+             <returns>strTables</returns>
+             <example>
+               <code>public static string[] GetTableExcel(string strFileName, string extencion)
+                     {
+                         string[] strTables = new string[100];
+                         Catalog oCatlog = new Catalog();
+                         ADOX.Table oTable = new ADOX.Table();
+                         ADODB.Connection oConn = new ADODB.Connection();
+                         if (extencion == ".xls")
+                             oConn.Open("Provider=Microsoft.Jet.OleDb.4.0; Data Source = " + strFileName + "; Extended Properties = \"Excel 8.0;HDR=Yes;IMEX=1\";", "", "", 0);
+                         if (extencion == ".xlsx")
+                         {
+                             try
+                             {
+                                 oConn.Open("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + strFileName + "; Jet OLEDB:Engine Type=5;Extended Properties='Excel 12.0;HDR=YES;IMEX=1';", "", "", 0);
+                             }
+                             catch (Exception e)
+                             {
+                                 Global.setError(e.Message);
+                                 log.Error(e.Message);
+                                 throw;
+                             }
+            
+                         }
+            
+            
+                         oCatlog.ActiveConnection = oConn;
+                         if (oCatlog.Tables.Count > 0)
+                         {
+                             int item = 0;
+                             foreach (ADOX.Table tab in oCatlog.Tables)
+                             {
+                                 if (tab.Type == "TABLE")
+                                 {
+                                     strTables[item] = tab.Name;
+                                     item++;
+                                 }
+                             }
+                         }
+                         oConn.Close();
+                         return strTables;
+                     }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Excel.GetDataTableExcel(System.String,System.String)">
+             <summary>Gets la tabla de excel</summary>
+             <param name="strFileName">strFileName</param>
+             <param name="extencion">extencion</param>
+             <returns>tables.datasset</returns>
+             <example>
+               <code>public static DataSet GetDataTableExcel(string strFileName, string extencion)
+                    {
+                        OleDbConnection conn = new OleDbConnection();
+            
+                        if (extencion == ".xls")
+                        {
+                            conn = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OleDb.4.0; Data Source = " + strFileName + "; Extended Properties = \"Excel 8.0;HDR=Yes;IMEX=1\";");
+                        }
+                        if (extencion == ".xlsx")
+                        {
+                            conn = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + strFileName + "; Jet OLEDB:Engine Type=5;Extended Properties='Excel 12.0;HDR=YES;IMEX=1';");
+                        }
+                        // try
+                        {
+                            conn.Open();
+                            string[] tablas = GetTableExcel(strFileName, extencion);
+                            string strQuery = "SELECT * FROM [" + tablas[0] + "]";
+            
+                            System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter(strQuery, conn);
+            
+                            System.Data.DataSet ds = new System.Data.DataSet();
+            
+                            adapter.Fill(ds);
+                            conn.Close();
+                            return ds.Tables[0].DataSet;
+                        }
+                        catch (Exception e)
+                        {
+                            Global.setError(e.Message);
+                            log.Error(e.Message);
+                            return null;
+                            throw;
+                        }
+            
+                        //adapter.Dispose();
+            
+            
+                    }</code>
+             </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Excel.InsertarDatosExcel(System.Data.DataSet,System.String)">
+            <summary>Inserta los datos en un excel</summary>
+            <param name="ldsData">lsdData</param>
+            <param name="prefijo">prefijo.</param>
+            <example>
+              <code>codigo</code>
+            </example>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Services.Excel.GenerarExcel(System.String,System.String)">
+            <summary>Genera el archivo excel</summary>
+            <param name="consultaSQL">la consulta SQL.</param>
+            <param name="fileName">Nombre del archivo</param>
+            <example>
+              <code>codigo</code>
+            </example>
+        </member>
+    </members>
+</doc>
