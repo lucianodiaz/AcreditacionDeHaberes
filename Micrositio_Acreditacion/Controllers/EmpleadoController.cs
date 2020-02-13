@@ -141,6 +141,7 @@ namespace Micrositio_Acreditacion.Controllers
 
         public ActionResult ResultadoSolicitudes()
         {
+            //retorna vista
            
                 return View();
             
