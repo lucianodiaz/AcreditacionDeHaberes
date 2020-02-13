@@ -139,6 +139,14 @@ namespace Micrositio_Acreditacion.Controllers
             
         }
 
+        public ActionResult ResultadoSolicitudes()
+        {
+           
+                return View();
+            
+
+        }
+
 
         /// <summary>Setea la fecha en global y redirecciona segun se seleccione para que metodo se utilizara</summary>
         /// <param name="d">d (date)</param>
