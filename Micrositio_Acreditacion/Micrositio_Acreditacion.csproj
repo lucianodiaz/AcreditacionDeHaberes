@@ -423,6 +423,7 @@
     <Content Include="Views\Home\ServicioDatos.cshtml" />
     <Content Include="Views\web.config" />
     <Content Include="Views\Empleado\AnalisisReporte.cshtml" />
+    <Content Include="Views\Empleado\ResultadoSolicitudes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
