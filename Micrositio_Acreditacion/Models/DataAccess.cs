@@ -1056,6 +1056,34 @@ namespace Micrositio_Acreditacion.Models
 
 
 
+        public List<ListadoSolicitud> GetListado()
+        {
+
+            string CMD = string.Format("exec REPALTAS_sp_ListarProcesos '{0}'", Global.GetEmpresa().nConvenio);
+
+            try
+            {
+                DataSet ds = Utilidades.Exec(CMD);
+                List<ListadoSolicitud> ls = new List<ListadoSolicitud>();
+                for(int i = 0; i< ds.Tables[0].Rows.Count; i++)
+                {
+                    var lista = new ListadoSolicitud()
+                    {
+                        Llamada = ds.Tables[0].Rows[i]["Llamada"].ToString(),
+                        Fecha = ds.Tables[0].Rows[i]["Fecha"].ToString(),
+                        totalRegistros = Convert.ToInt32(ds.Tables[0].Rows[i]["TotalRegistros"])
+                    };
+                    ls.Add(lista);
+                }
+                return ls;
+            }
+            catch(Exception e)
+            {
+                log.Error(e.Message);
+                throw;
+            }    
+        } 
+
         /// <summary>Gets the reporte.</summary>
         /// <param name="fecha">The fecha.</param>
         /// <returns>new Preview</returns>

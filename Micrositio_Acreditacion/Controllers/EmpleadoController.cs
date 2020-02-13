@@ -143,9 +143,8 @@ namespace Micrositio_Acreditacion.Controllers
         {
             //retorna vista
            
-                return View();
-            
-
+                
+                return View(da.GetListado());
         }
 
 

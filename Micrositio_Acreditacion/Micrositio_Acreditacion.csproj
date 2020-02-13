@@ -380,6 +380,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ListadoSolicitud.cs" />
     <Compile Include="Models\Empleado.cs" />
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\Preview.cs" />
@@ -453,7 +454,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60571</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
