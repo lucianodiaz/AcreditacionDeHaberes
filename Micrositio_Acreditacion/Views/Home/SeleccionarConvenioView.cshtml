@@ -1,0 +1,138 @@
+﻿@using Micrositio_Acreditacion.Services
+@using Micrositio_Acreditacion.Models
+@{
+    DataAccess ds = new DataAccess();
+
+    Global.SetSucursal(ds.ListBoxSuc());
+    Global.setAcreditacion(ds.ListBoxAcre());
+    Global.setCuenta(ds.ListBoxCuenta());
+
+    var sucursal = Global.GetSucursal();
+    var acreditacion = Global.GetAcreditacion();
+    var cuenta = Global.GetCuenta();
+    ViewBag.Title = "SeleccionarConvenioView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="w-100">
+
+</div>
+
+
+<div class=" ">
+
+    <div class="" style="background-position: center;background-image: url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-lg-8 col-sm-12 bg-white" style="overflow-x: hidden;
+        overflow-y: auto; height:650px; width: 100%;">
+            
+            <nav class="navbar navbar-expand-md bg-white navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class=" navbar-nav nav-tabs" role="tablist">
+                        <li class="nav-item ">
+
+                            <a class="nav-link active text-white bg-warning  " data-toggle="tab" href="#index" onclick=""><h5 class="text-center">Paso 1</h5>Seleccione el servicio</a>
+                        </li>
+                        <li class="nav-item ">
+
+                            <a class="nav-link  text-warning  " data-toggle="tab" href="#index" onclick="document.getElementById('siguiente').click();"><h5 class="text-center">Paso 2</h5>Ingreso de acreditaciones</a>
+                        </li>
+                        <li class="nav-item  disabled disabledTab ">
+
+                            <a class="nav-link  disabled disabledTab  text-warning  " data-toggle="tab" href="#index" onclick=""><h5 class="text-center">Paso 3</h5>Confirme acreditación</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+            <h5 class="text-center ">Gestione sus haberes</h5>
+            <div class="tab-content mt-4">
+                <div id="index" class=" tab-pane active">
+                    <div class="col ">
+
+                    </div>
+                </div>
+                <br>
+                <form action="@Url.Action("Selector","Empleado")" method="post" id="acredForm">
+                    <div class="col-11 col-md-12  align-self-center text-center">
+                        Seleccione su servicio
+                        <br />
+                    </div>
+                    
+                    <div class="col-11 col-md-12 offset-lg-2 offset-md-2 offset-2 align-self-center form-group  " >
+                        
+                        <select name="acreditacion" id="empresa" class="form-control-sm offset-lg-1 pr-md-2 text-right mb-5 w-50">
+                            @foreach (var a in acreditacion)
+                            {
+                                <option value="@a.Codigo">@Global.GetEmpresa().RazonSocial - @a.Denominacion</option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="text-center mb-3">Seleccione tipo de acreditación</div>
+
+                    <div class="row text-center mr-md-0 mr-2" >
+                        <div class="offset-lg-2 col-md-5 col-lg-4 " >
+                            <div class="pricingTable">
+                                <span class="icon"><i class="fa fa-user"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Carga </h1><span class="price-value">Manual</span>
+                                </div>
+
+                                <label class="form-check-label" for="radio1">
+                                    <input type="radio" class="form-check-input" id="radio1" name="radio" value="manual" checked>Seleccionar
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-5 col-lg-4 ">
+                            <div class="pricingTable">
+                                <span class="icon"><i class="fas fa-file-alt"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Carga Masiva</h1><span class="price-value mt-3" style="font-size:20px"> desde archivo excel</span>
+                                </div>
+
+
+                                <label class="form-check-label" for="radio2">
+                                    <input type="radio" class="form-check-input" id="radio2" name="radio" value="masiva" checked>Seleccionar
+                                </label>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+                </form>
+            </div>
+
+            <div class="col-lg-8 mb-3 ">
+                <nav class="fixed-bottom d-block col-lg-8 col-10 mb-3">
+                    <div class="col ">
+                        <button type="submit" class="btn btn-warning rounded btn-sm d-inline float-right mr-lg-2" form="acredForm" id="siguiente">Siguiente</button>
+                        <a class="btn btn-warning rounded btn-sm d-inline float-left" href="@Url.Action("Index","Home")">Volver</a>
+
+                    </div>
+                </nav>
+
+
+            </div>
+
+
+           
+        </div>
+
+        </div>
+
+
+</div>
+

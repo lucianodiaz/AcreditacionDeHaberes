@@ -1,0 +1,167 @@
+﻿@using Micrositio_Acreditacion.Services
+@model IEnumerable<Micrositio_Acreditacion.Models.Empleado>
+@using System.Globalization;
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var acreditacion = Global.GetGlobalAcreditacion();
+    var empresa = Global.GetEmpresa();
+
+    var fechaFinal = Global.FechaForm();
+}
+
+
+
+
+    <div class="">
+
+        <div class="" style="background-position: center;background-image: url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+            <div class="numero col-9 bg-white" style="overflow-y: auto; height:700px;">
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item ">
+
+                        <form action="@Url.Action("Index","Home")" method="post" id="i">
+                            <a class="nav-link  text-warning  " data-toggle="tab" href="" onclick="document.getElementById('i').submit();"><h5 class="text-center">Paso 1</h5>Seleccione su empresa</a>
+                        </form>
+
+                    </li>
+                    <li class="nav-item ">
+                        <!-- <form action="error.php" id="myform"> -->
+                        <!--  <a class="nav-link active text-warning  " data-toggle="tab" href="#index" onclick="document.getElementById('myform').submit()"><h5 class="text-center">Paso 2</h5>Seleccione sus empleados</a> -->
+                        <!-- </form>
+                        -->
+                        <form action="@Url.Action("Index","Empleado")" method="post" id="j">
+                            <input type="text" value="@acreditacion" name="TipoAcred" hidden/>
+                            <input type="text" name="CodEmp" value="@empresa.CodEmp" placeholder="" hidden class="border-0 form-control-sm">
+                            <a class="nav-link  text-warning  " data-toggle="tab" href="" onclick="document.getElementById('j').submit();"><h5 class="text-center">Paso 2</h5>Gestionar nomina</a>
+                        </form>
+                    </li>
+                    <li class="nav-item ">
+                        <!-- <form action="error.php" id="myform"> -->
+                        <!--  <a class="nav-link active text-warning  " data-toggle="tab" href="#index" onclick="document.getElementById('myform').submit()"><h5 class="text-center">Paso 2</h5>Seleccione sus empleados</a> -->
+                        <!-- </form>
+                        -->
+                        <a class="nav-link active text-warning  " data-toggle="tab" href="#index" onclick=""><h5 class="text-center">Paso 3</h5>Confirmar acreditaci</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content mt-4">
+                    <div id="index" class="container tab-pane active">
+                        <div class="btn-group  float-right mt-3 mb-3 mr-3">
+                            <form action="" method="get" id="formNomina">
+
+                                <input type="date" class="" id="fechaNomina" name="fechaNomina" hidden="">
+                                <button type="submit" class="btn btn-primary btn-lg d-inline float-right">Generar Nomina</button>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="col align-self-center ">
+                        <table id="" class="table table-responsive table-striped  ">
+
+                            <thead>
+                                <tr>
+                                    <td colspan="1" class="" style="border: none;">Empleados que se informan para realizar la corresponiente</td>
+                                    <td colspan="5" class="text-right" style="border: none;">@DateTime.Today.Date.ToShortDateString()</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right" style="border: none;"><u>@empresa.RazonSocial</u></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="border: none;">
+                                        <form action="@Url.Action("fechaEdit", "Empleado")" method="post" class="formFechaPago" id="formFechaPago"> 
+                                            <input type="date" name="d" class="form-control-sm w-50 small fechaPago" id="fechaPago" value="@fechaFinal">
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right" style="border: none;">
+                                        @empresa.Email
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                <tr>
+                                    <th>Nombre Completo</th>
+                                    <th>DNI </th>
+                                    <th>Importe </th>
+                                    <th>Sucursal</th>
+                                    <th>Cuenta</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody style="overflow-x: scroll;  ">
+
+                                @if (Model != null)
+                                {
+                                    foreach (var m in Model)
+                                    {
+                                        <tr>
+                                            <td id=" " hidden="true">1</td>
+                                            <!-- <td id="prfn " ><form  action="lasssla.php" method="post" id="idform" class="idform"><input type="text" value="1" name="Id" id="Id" class="id"></form></td> -->
+                                            <td>@m.Nombre</td>
+                                            <td>@m.Dni</td>
+
+                                            <td hidden>2032456789</td>
+
+                                            <td>
+
+                                                @m.Importe
+                                            </td>
+
+                                            <td hidden>
+                                                <form action="error.html" method="post" id="fechasForm">
+                                                    <input type="date" value="" name="Fecha" id="fecha" class="fecha">
+                                                </form>
+                                            </td>
+
+                                            <td>@m.Sucursal</td>
+
+                                            <td hidden>Haberes</td>
+
+                                            <td hidden>Cuenta Corriente</td>
+
+                                            <td>@m.Cuenta</td>
+
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                <tr>  
+
+                                </tr>  
+
+                                }
+
+
+
+
+</tbody>
+                        </table>
+
+                    </div>
+                  
+                    </form>
+                   
+
+                </div>
+
+
+                <div class="numero col-3 ">
+                  
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </div>

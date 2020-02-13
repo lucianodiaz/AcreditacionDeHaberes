@@ -1,0 +1,71 @@
+﻿@using Micrositio_Acreditacion.Services
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cuitSession = Global.getSession();
+    var RsSession = Global.getRSSession();
+}
+<div class=" ">
+
+    <div class="" style="background-position: center;background-image: url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-sm-12 col-lg-8 col-md-12 bg-white" style="overflow-x: hidden;
+        overflow-y: hidden; height:100%; width: 100%;">
+            <h5 class="text-center">Micrositio de acreditaciones</h5>
+
+
+            <div class="tab-content ">
+                <div id="index" class="tab-pane active ">
+
+                    <div class="row text-centerd-flex align-self-start mr-3 mr-md-0 " style="font-size: 12px;">
+                        <div class="offset-lg-1 col-sm-12 col-md-5 col-lg-4">
+                            <div class="pricingTable">
+                                <span class="icon"><i class="fa fa-briefcase"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Obtenga sus </h1><span class="price-value mt-2" style="font-size:24px;">datos del servicio</span>
+                                </div>
+                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("ServicioDatos","Home")' class="btn btn-dark rounded-0">IR</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12 col-lg-4">
+                            <div class="pricingTable">
+                                <span class="icon"><i class="fa fa-user-tie"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Gestione sus </h1><span class="price-value">empleados</span>
+                                </div>
+                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("Index","Empleado")' class="btn btn-dark rounded-0">IR</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row text-center mt-2 d-flex align-self-center mr-3 mr-md-0 mb-1">
+                        <div class="offset-lg-1 col-md-5 col-sm-12 col-lg-4">
+                            <div class="pricingTable">
+                                <span class="icon"><i class="fas fa-table"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Gestione sus </h1><span class="price-value">haberes</span>
+                                </div>
+                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("SeleccionarConvenioView","Home")' class="btn btn-dark rounded-0">IR</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12 col-lg-4">
+                            <div class="pricingTable">
+                                <span class="icon"><i class="fas fa-file-alt"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Obtenga su </h1><span class="price-value">reporte</span>
+                                </div>
+                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("AnalisisReporte","Empleado")' class="btn btn-dark rounded-0">IR</a>
+                            </div>
+                        </div>
+                       
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>

@@ -1,0 +1,101 @@
+﻿@*@model IEnumerable<Micrositio_Acreditacion.Models.Empleado>
+@using Micrositio_Acreditacion.Models*@
+@using Micrositio_Acreditacion.Services
+@using System.Web.Configuration
+@{
+    //DataAccess ds = new DataAccess();
+
+    //Global.SetSucursal(ds.ListBoxSuc());
+    //Global.setAcreditacion(ds.ListBoxAcre());
+    //Global.setCuenta(ds.ListBoxCuenta());
+
+    //var sucursal = Global.GetSucursal();
+    //var acreditacion = Global.GetAcreditacion();
+    //var cuenta = Global.GetCuenta();
+
+    //var error = Global.getError();
+
+
+    ViewData["Title"] = "Index";
+
+    ViewBag.Title = "Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //var sep = "-";
+
+}
+
+@*<h2>@Global.GetEmpresa().Cuit / @Global.GetEmpresa().RazonSocial / @Global.GetGlobalAcreditacion()</h2>*@
+
+
+    <div class="" style="background-position: center;background-image: url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-md-7 bg-white" style="overflow-x: hidden;
+      overflow-y: auto; height:650px; width: 100%;">
+            <h5 class="text-center ">Gestión de empleados</h5>
+
+
+            <div class="tab-content ">
+                <div id="index" class="container tab-pane active">
+
+                  
+                    <div class="row text-center  mt-5 mr-5 ">
+                        <div class="offset-lg-1 col-md-5 col-lg-4">
+                            <div class="pricingTable h-50">
+                                <span class="icon"><i class="fas fa-id-card"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Alta de </h1><span class="price-value">Cuentas</span>
+                                </div>
+                                <ul class="list-unstyled pricing-content"></ul><a href="@WebConfigurationManager.AppSettings["altacuentas"]" target="_blank" class="btn btn-dark rounded-0">IR</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-lg-4">
+                            <div class="pricingTable h-50">
+                                <span class="icon"><i class="fas fa-user"></i></span>
+                                <div class="pricingTable-header">
+                                    <h1 class="title">Mantenimiento de  </h1><span class="price-value">empleados</span>
+                                </div>
+                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("CargarEmpleadosGral", "Empleado")' class="btn btn-dark rounded-0">IR</a>
+                            </div>
+
+                         
+                        </div>
+                 
+                    </div>
+
+
+
+
+                </div>
+            </div>
+            <nav class="d-block mb-3 fixed-bottom">
+                <div class="col-12 text-center mt-5">
+
+                    <div class="row">
+                        <div class="col-3 text-left ">
+                            <a type="button" class="btn btn-warning rounded text-left" href='@Url.Action("Index","Home")'>Volver</a>
+                        </div>
+                        <div class="col-3 text-center">
+
+                        </div>
+                        <div class="col-2 text-right">
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </nav>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+    </div>
+

@@ -1,0 +1,163 @@
+﻿@using Micrositio_Acreditacion.Services
+@using Micrositio_Acreditacion.Models
+@{
+    /**/
+
+    ViewBag.Title = "Resumen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var fechaFinal = Global.FechaForm();
+    var fechaExcel = "";
+}
+
+<div class="w-100">
+
+</div>
+
+
+<div class=" ">
+
+    <div class=" row " style="background-position: center;background-image:url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-sm-12 col-md-8 bg-white" style="overflow-x: hidden;
+        overflow-y: auto; height:650px; width: 100%;">
+            <nav class="navbar navbar-expand-md bg-white navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="nav nav-tabs navbar-nav" role="tablist">
+                        <li class="nav-item ">
+
+                            <a class="nav-link  text-warning " href="@Url.Action("SeleccionarConvenioView","Home")" onclick=""><h5 class="text-center">Paso 1</h5>Seleccione su solicitud de servicio</a>
+                        </li>
+                        <li class="nav-item ">
+
+                            @if (Global.GetCarga())
+                            {
+                                <a class="nav-link text-warning " href="@Url.Action("CargaMasivaResultado","Empleado")" onclick=""><h5 class="text-center">Paso 2</h5>Ingreso de acreditaciones</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link text-warning " href="@Url.Action("CargaIndividual","Empleado")" onclick=""><h5 class="text-center">Paso 2</h5>Ingreso de acreditaciones</a>
+                            }
+
+                        </li>
+                        <li class="nav-item ">
+
+                            <a class="nav-link active text-white bg-warning  " data-toggle="tab" href="#index" onclick=""><h5 class="text-center">Paso 3</h5>Confirme acreditacion</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="tab-content mt-4">
+                <div id="index" class="container tab-pane active">
+
+                </div>
+                <br>
+
+                <div class="container table-responsive align-self-center  ">
+                    <table id="table" class="table table-responsive table-striped  ">
+                        <thead class="clearfix">
+                            <tr>
+                                <td colspan="4" class="text-left">
+                                    <h4>Empresa: <b>@Global.getRSSession()</b></h4>
+                                </td>
+                                <td colspan="4" class="text-left">
+                                    <h4>Tipo acred.: <b>@Global.GetGlobalAcreditacion()</b></h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    <h4>Detalles de acreditaciones al <b>@fechaFinal</b></h4>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="8">
+                                    <h5>Cantidad de acreditaciones: <b>@Global.getPreview().aceptados</b></h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    <h5>Monto a acreditar: <b>$@Global.getPreview().Montoaceptados</b></h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-right mt-5">
+                                   
+                                    @{ 
+                                        fechaExcel = fechaFinal.Substring(8, 2);
+                                        fechaExcel = fechaExcel + fechaFinal.Substring(5, 2);
+                                        fechaExcel = fechaExcel  + fechaFinal.Substring(2, 2);
+                                    }
+
+                                    <form action="@Url.Action("GenerarReporte","Empleado")" method="post">
+                                        <input type="text" name="fecha" value="@fechaExcel" hidden />
+                                        <button type="submit" class="btn btn-success ">Exportar detalle<i class="fas fa-file-download"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        </thead>
+                    </table>
+                    <p hidden id="TotEmp1"></p>
+                    <p hidden id="TotImporte"></p>
+                    <p hidden id="TotEmp"></p>
+                    <p hidden id="TotImporte"></p>
+                    <p hidden id="TotEmpm"></p>
+                    <p hidden id="TotImportem"></p>
+
+                </div>
+
+
+                <nav class="d-block fixed-bottom mb-3">
+                    <div class="col-md-8 col-11">
+                        @if (Global.GetCarga())
+                        {
+                            <a class="btn btn-warning d-inline float-left  " href="@Url.Action("CargaMasivaResultado","Empleado")"><i class="fa fa-backward"></i> Volver</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-warning d-inline float-left  " href="@Url.Action("CargaIndividual","Empleado")"> Volver</a>
+                        }
+                        <button type="submit" class="btn btn-warning   d-inline float-right" data-toggle="modal" data-target="#deleteEmp-modal-grid"> Confirmar</button>
+                    </div>
+                </nav>
+
+
+            </div>
+
+
+            
+        </div>
+
+        </div>
+
+
+    </div>
+    @*confirm modal*@
+    <div class="modal fade" id="deleteEmp-modal-grid" tabindex="-1" role="dialog" aria-labelled="emp-modal-grid" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Aviso <i class="fas fa-exclamation-triangle text-warning " style="font-size: 30px;"></i></h5>
+                    <button class="close" data-dismiss="modal" aria-label="cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="col">
+                        <form action="">
+                            <h5>Atención se va a generar el archivo de acreditaciones para ser presentado a través de <u><b>BSJ EMPRESAS</b></u></h5>
+                            <table id="table2e" class="table"></table>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger rounded" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-success rounded" href='@Url.Action("GenerarTxt","Empleado")' onclick="return redirect()">Aceptar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

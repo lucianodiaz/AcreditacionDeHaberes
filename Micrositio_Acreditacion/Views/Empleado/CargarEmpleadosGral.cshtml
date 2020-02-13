@@ -1,0 +1,431 @@
+﻿@model IEnumerable<Micrositio_Acreditacion.Models.Empleado>
+@using Micrositio_Acreditacion.Services
+@using Micrositio_Acreditacion.Models
+
+@{
+    DataAccess ds = new DataAccess();
+
+    Global.SetSucursal(ds.ListBoxSuc());
+    Global.setAcreditacion(ds.ListBoxAcre());
+    Global.setCuenta(ds.ListBoxCuenta());
+
+    var sucursal = Global.GetSucursal();
+    var acreditacion = Global.GetAcreditacion();
+    var cuenta = Global.GetCuenta();
+    int indiceC = 0;
+    var acre = "";
+    ViewBag.Title = "CargarEmpleadosGral";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="w-100">
+
+</div>
+
+
+<div class=" ">
+
+    <div class="row ml-1" style="background-position: center;background-image: url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-sm-12 col-md-8 bg-white" style="overflow-x: hidden;
+        overflow-y: auto; height:650px; width: 100%;">
+
+
+
+            <div id="index" class="tab-pane active">
+                <h5 class="text-center">Mantenimiento de empleados</h5>
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <button class="navbar-toggler float-left" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse text-center" id="collapsibleNavbar">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="btn d-inline float-left nav-link" data-toggle="modal" data-target="#newEmp-modal-grid" id="btnNew" onclick="return disablenuevo();"><i class="fas fa-user-plus text-warning" style="font-size: 18px;"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn  d-inline float-left nav-link" id="btnEdit" onclick="return disableEdit()" disabled="true" data-toggle="modal" data-target="#editEmp-modal-grid"><i class="fas fa-user-edit text-warning" style="font-size: 18px;"></i></a>
+
+                            </li>
+                            <li class="nav-item">
+                                <form action="@Url.Action("Delete","Empleado")" method="post" onsubmit="return confirm('¿Esta seguro que quiere dar de baja los registros seleccionados?');" id="deleteForm">
+                                    <input type="text" id="deleteInput" name="deleteInput" hidden="">
+                                    <button class="btn  d-inline float-left nav-link bg-white" onclick="return disable();" id="btnDelete" disabled=""><i class="fas fa-user-slash text-warning" style="font-size: 18px;"></i></button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
+                </nav>
+                <div class="offset-md-4 col-md-4 col-12 offset-3" >
+                    <form action="@Url.Action("CargarEmpleadosGral", "Empleado")" method="post" id="SelConvenioForm">
+                        <label for="SelConvenio" class="p-1 m-auto">Solicitud de servicio</label>
+                        <br>
+                        @switch (@Global.GetGlobalAcreditacion())
+                        {
+                            case "":
+                                acre = "Seleccione su convenio";
+                                break;
+                            case "02":
+                                acre = "HABERES";
+                                break;
+                            case "03":
+                                acre = "PUBLICO";
+                                break;
+                            case "04":
+                                acre = "PROVEEDORES";
+                                break;
+                            case "07":
+                                acre = "PRUEBA";
+                                break;
+                            case "10":
+                                acre = "USURAS PUPILARES";
+                                break;
+                                //search index?
+                        }
+                        <select name="acreditacion" id="SelConvenio" >
+
+                            <option value="" selected="selected" >@Global.getRSSession() - @acre</option>
+                            @foreach (var a in acreditacion)
+                            {
+                                        if (@Global.GetGlobalAcreditacion() == @a.Codigo)
+                                        {
+                                    <option hidden value="@a.Codigo">@Global.getRSSession() - @a.Denominacion</option>
+                                        }
+                                        else
+                                        {
+                                    <option value="@a.Codigo">@Global.getRSSession() - @a.Denominacion</option>
+                                        }
+
+                                    }
+
+                        </select>
+                    </form>
+
+                </div>
+
+
+
+            </div>
+            <br>
+            @*table1e*@
+            <div class=" table-responsive " style="overflow-y: auto; height:330px;">
+                <table id="table1e" class="table table-striped table-sm" align="" cellpadding="2" style="overflow-y: scroll; overflow-x: scroll;">
+                    <thead class="clearfix">
+                        <tr>
+
+                            <th>Nombre <a href="@Url.Action("CargarEmpleadosGral","Empleado", new { order = "0"})"><i class="fas fa-sort-up"></i></a>
+                                       <a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "1" })"><i class="fas fa-sort-down"></i></a></th>
+                            <th>DNI </th>
+                            <th>CUIL </th>
+
+
+                            <th hidden>Sucursal </th>
+
+                            <th hidden>Tipo de cuenta </th>
+                            <th hidden>Cuenta </th>
+                            <th>CBU</th>
+                            <th>Estado<a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "2"})"><i class="fas fa-sort-up"></i></a>
+                                      <a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "3"})"><i class="fas fa-sort-down"></i></a></th>
+                            <th>Estado de cuenta</th>
+
+
+                        </tr>
+
+                    </thead>
+                    <tbody style="overflow-x: scroll;  ">
+                        <!-- valor hiden para que funcione el evento outfocus -->
+                        <!-- //////////////////////////////////////// -->
+
+                        @foreach (var e in Model)
+                                {
+                            <tr>
+                                <td hidden>@e.Id</td>
+
+                                <!-- <td id="prfn " ><form  action="lasssla.php" method="post" id="idform" class="idform"><input type="text" value="1" name="Id" id="Id" class="id"></form></td> -->
+                                <td>@e.Nombre</td>
+                                <td>@e.Dni</td>
+
+                                <td>@e.Cuil</td>
+
+                                <!-- <td><form action="error.html" method="post" id="importeForm" onsubmit="return validarGrilla()" >
+                              <input  type="number"  required="true" value="" name="Importe" id="importe" class="importe">
+                            </form></td> -->
+
+
+
+                                <td hidden>  </td>
+
+
+                               <td hidden></td>
+
+                               <td hidden>@e.TipoCuenta</td>
+
+                                <td hidden>@e.Cuenta</td>
+
+                                <td>@e.CBU</td>
+
+                                @if (@e.Activo == true)
+                                {
+                                    <td class="">Activo</td>
+                            }
+                                else
+                                {
+                                    <td class="text-muted">Inactivo</td>
+                        }
+                                <td hidden>
+                                    @e.Sucursal
+                                </td>
+                                <td style="min-width:160px;">@e.EstadoCuenta</td>
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <nav class="navbar col-8 mb-2 d-block fixed-bottom">
+                
+                    
+
+
+                <div class="text-right col-md-6 col-lg-10 col-12">
+                    <h5 id="TotEmp1" class="float-right"></h5>
+                    <h5 id="TotEmp" hidden></h5>
+                    <h5 id="TotEmpm" hidden></h5>
+                    <h5 id="TotImportem" hidden></h5>
+                    <a class="float-left btn btn-warning rounded" href="@Url.Action("Index","Home")">Volver</a>
+                    <b hidden style="font-size: 16px;" id="TotImporte"></b>
+
+                </div>
+            </nav>
+        </div>
+
+        </div>
+
+
+      
+    </div>
+</div>
+
+
+</div>
+
+<footer>
+    <table id="table2e" class="table" hidden></table>
+</footer>
+
+<!-- new modal -->
+
+<div class="modal fade" id="newEmp-modal-grid" tabindex="-1" role="dialog" aria-labelled="emp-modal-grid" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Crear nuevo empleado</h5>
+                <button class="close" data-dismiss="modal" aria-label="cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="">
+                    <form method="post" action="@Url.Action("New","Empleado")" id="new" onsubmit="return validarNewEmpleado();">
+                        <div class="form-group row pr-1 pr-md-0">
+
+
+                            <div class="col-10 col-md-5 col-lg-5 ">
+                                <label for="Dni">DNI</label>
+                                <input type="number" class="form-control" placeholder="DNI" name="Dni" id="nDNI" maxlength="8" >
+                            </div>
+                            <div class="col-10 col-md-5 col-lg-5 ml-lg-4">
+                               
+                                <label for="Cuil">CUIL</label>
+                                <input type="number" class="form-control" placeholder="CUIL/CUIT" name="Cuil" id="ncuit" maxlength="11">
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group row ">
+                            <div class="col-md-10 col-10 mb-md-2 offset-lg-1 col-lg-9">
+                                <label for="Nombre">Nombre completo</label>
+                                <input type="text" class="form-control" placeholder="Nombre y apellido" name="Nombre" id="nNombre">
+                            </div>
+
+
+                        </div>
+
+                        <div class="d-none">
+                            
+                            <div class="col-md-3 col-6">
+                                <label for="Sucursal">Sucursal</label>
+                                <select class="form-control  bg-white  " name="Sucursal" id="Sucursal" style="height: 35%;">
+                                    <optgroup label="Seleccione la sucursal"></optgroup>
+                                    <option value="" selected hidden></option>
+                                    @foreach (var s in sucursal)
+                        {
+                                        <option value="@s.Sucursal">@s.Sucursal - @s.Descripcion</option>
+                                    }
+                                </select>
+                            </div>
+
+
+                            <div class="col-md-3 col-6">
+                                <label for="Cuenta">N° cuenta</label>
+                                <input type="text" class="form-control" placeholder="N° de cuenta" name="Cuenta" id="nCuenta" maxlength="7">
+                            </div>
+
+                        </div>
+                     
+
+
+
+                        <div class="form-group row">
+                            <div hidden class="display-none col-md-6 offset-2 offset-lg-2 col-6">
+                                <label for="TipoCuenta">Tipo de cuenta</label>
+                                <select class="form-control  bg-white  " name="TipoCuenta" id="TipoCuenta" style="height: 35%;">
+                                    <optgroup label="Filtre por tipo de cuenta"></optgroup>
+                                    <option selected hidden value=""></option>
+                                    @foreach (var c in cuenta)
+                                    {
+                                        <option value="@c.Denominacion">@c.Id - @c.Denominacion</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-10 col-10 offset-lg-2 col-lg-7">
+                                <label for="CBU">CBU</label>
+                                <input type="number" class="form-control" name="CBU" id="ncbu" placeholder="CBU" maxlength="22">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-success rounded" onclick="return validarCBUNew(ncbu.value);" value="Guardar">
+                            <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- edit modal -->
+
+<div class="modal fade" id="editEmp-modal-grid" tabindex="-1" role="dialog" aria-labelled="emp-modal-grid" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Edita los datos de tu empleado</h5>
+                <button class="close" data-dismiss="modal" aria-label="cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="">
+                    <form method="post" action="@Url.Action("EditFunction","Empleado")" id="editForm" onsubmit="return validarEditEmpleado();">
+                        <div class="form-group row">
+                            <input type="text" name="Id" id="eId" hidden  />
+
+                            <div class="col-md-5 col-10">
+                                <label for="Dni">DNI</label>
+                                <input type="number" class="form-control" placeholder="DNI" name="Dni" id="eDNI" maxlength="8" readonly>
+                            </div>
+
+                            <div class="col-md-5 col-10">
+                                <input type="text" id="Id" name="Id" hidden="">
+                                
+                                <label for="Cuil">CUIL</label>
+                                <input type="number" class="form-control" placeholder="CUIL/CUIT" name="Cuil" id="eCuil" maxlength="11">
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <div class="col-md-9 offset-md-1 col-10" >
+                                <label for="Nombre">Nombre completo</label>
+                                <input type="text" class="form-control" placeholder="Nombre y apellido" name="Nombre" id="eNombre">
+                            </div>
+                        </div>
+
+                        <div class="d-none">
+                           
+                            <div class="col-md-3 col-6">
+                                <label for="Sucursal">Sucursal</label>
+                                <select class="form-control  bg-white  " name="Sucursal" id="eSucursal" style="height: 35%;">
+                                    <option value="" selected></option>
+                                    @foreach (var s in sucursal)
+                        {
+                                        <option value="">@s.Sucursal - @s.Descripcion</option>
+                                    }
+                                </select>
+                            </div>
+
+
+
+                            <div class="col-md-3 col-6">
+                                <label for="Cuenta">N° cuenta</label>
+                                <input type="text" class="form-control" placeholder="N° de cuenta" name="Cuenta" id="eCuenta" maxlength="7">
+                            </div>
+
+                        </div>
+
+  
+                        <div class="form-group row">
+                            <div hidden class="col-md-6 offset-md-2 col-10">
+                                <label for="TipoCuenta">Tipo de cuenta</label>
+                                <select class="form-control eTipoCuenta  bg-white  " name="TipoCuenta" id="eTipoCuenta"  style="height: 35%;">
+                                    <option value="" hidden selected></option>
+                                    @foreach (var c in cuenta)
+                        {
+                                        <option value="@c.Id">@c.Id - @c.Denominacion</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-10 col-10 col-lg-9 offset-lg-1 ">
+                                <label for="CBUedit">CBU</label>
+                                <input type="number" class="form-control" placeholder="CBU" name="CBU" id="CBUedit" maxlength="22">
+                            </div>
+                        </div>
+                        <div class="form-group row d-flex justify-content-center">
+                            <div class="col-md-8 offset-md-5 col-5">
+                                <div class="onoffswitch3">
+                                    <input type="checkbox" name="Activo" class="onoffswitch3-checkbox" id="myonoffswitch3" value="true">
+                                    <label class="onoffswitch3-label" for="myonoffswitch3">
+                                        Estado del empleado
+                                        <span class="onoffswitch3-inner">
+                                            <span class="onoffswitch3-active"><span class="onoffswitch3-switch">Activo</span></span>
+                                            <span class="onoffswitch3-inactive"><span class="onoffswitch3-switch">Inactivo</span></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  <div class="form-group">
+                           <div class="col-5 offset-3">
+                             <label for="TipoAcred">Tipo de acreditación</label>
+                             <select name="TipoAcreditacion" id="eAcred" class="form-control bg-white" style="height: 35%">
+
+                               <option value="Caja de ahorro">Caja de ahorro</option>
+                               <option value="Cuenta Corriente">Cuenta Corriente</option>
+                             </select>
+                           </div>
+                         </div> -->
+                        <input type="text" name="TipoAcretitacion" id="tipo" hidden="">
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success rounded" onclick="return validarCBU(CBUedit.value);">Guardar</button>
+                            <button class="btn btn-default rounded" data-dismiss="modal">Cancelar</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

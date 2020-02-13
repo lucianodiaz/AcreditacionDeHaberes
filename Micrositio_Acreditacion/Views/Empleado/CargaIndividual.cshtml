@@ -1,0 +1,182 @@
+﻿@model IEnumerable<Micrositio_Acreditacion.Models.Empleado>
+@using Micrositio_Acreditacion.Services
+@using Micrositio_Acreditacion.Models
+@{
+    ViewBag.Title = "CargaIndividual";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var fechaFinal = Global.FechaForm();
+    var count = 0;
+    DataAccess ds = new DataAccess();
+
+    Global.SetSucursal(ds.ListBoxSuc());
+    Global.setAcreditacion(ds.ListBoxAcre());
+    Global.setCuenta(ds.ListBoxCuenta());
+
+    var sucursal = Global.GetSucursal();
+    var acreditacion = Global.GetAcreditacion();
+    var cuenta = Global.GetCuenta();
+    int indiceC = 0;
+}
+
+<div class="w-100">
+
+</div>
+
+
+<div class=" ">
+
+    <div class="row ml-1 " style="background-position: center;background-image:url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-sm-12 col-md-8 bg-white" style="height:650px; width: 100%;">
+            <nav class="navbar navbar-expand-md bg-white navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="nav nav-tabs navbar-nav" role="tablist">
+                        <li class="nav-item ">
+
+                            <a class="nav-link  text-warning " href="@Url.Action("SeleccionarConvenioView","Home")"><h5 class="text-center">Paso 1</h5>Seleccione su solicitud de servicio</a>
+                        </li>
+                        <li class="nav-item ">
+
+                            <a class="nav-link active text-white bg-warning   " data-toggle="tab" href="#" onclick=""><h5 class="text-center">Paso 2</h5>Ingreso de acreditaciones</a>
+                        </li>
+                        <li class="nav-item " id="paso3">
+
+                            <a class="nav-link  text-warning  " href="@Url.Action("Resumen","Empleado")"><h5 class="text-center">Paso 3</h5>Confirme acreditacion</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="tab-content ">
+                <div id="index" class="container tab-pane active">
+                    <div class="col">
+
+
+                        <nav class="d-inline-block offset-md-3" data-spy="affix" data-offset-top="205">
+                            <div class="col-md-7 col-4 text-center d-inline">
+                                <form action="@Url.Action("fechaEdit","Empleado")" method="post" id="fechasForm">
+                                    <label for="nFecha">Ingrese fecha de acreditación</label>
+                                    <input type="date" class="w-50" id="nFecha" value="@fechaFinal" name="d">
+                                </form>
+                                <br />
+                                <div class="text-center">
+                                    
+                                </div>
+                            </div>
+                        </nav>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class=" table-responsive" style="overflow-y: auto; height:330px;">
+                    <table id="table1ni" class="table table-striped table-sm" align="center" cellspacing="5" style="overflow-y: scroll; overflow-x: scroll;">
+                    <thead class="clearfix">
+
+                            <tr>
+
+                                <th>Nombre <a><i class="fas fa-sort-up"></i></a><a><i class="fas fa-sort-down"></i></a></th>
+                                <th>DNI </th>
+                                <th>CUIL </th>
+                                <th style="width: 50px;">Importe <a><i class="fas fa-sort-up"></i></a><a><i class="fas fa-sort-down"></i></a></th>
+
+                                <th hidden>Sucursal </th>
+
+                                <th hidden>Tipo de cuenta </th>
+                                <th hidden>Cuenta </th>
+
+                                <th class="text-sm-left text-md-center">CBU </th>
+
+
+
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var a in Model)
+                            {
+                                <tr>
+
+
+                                    <td>@a.Nombre</td>
+                                    <td>@a.Dni</td>
+
+                                    <td>@a.Cuil</td>
+
+                                    <td>
+                                        <form action="@Url.Action("EditFunction","Empleado")" method="post" id="importeForm" class="importeForm">
+                                            <input type="number" required="true" value='@a.Importe.Replace(",",".")' name="Importe" id="@count++" onclick="this.select();" class="importe text-right">
+                                            <input type="text" name="Dni" value="@a.Dni" hidden />
+                                        </form>
+                                    </td>
+
+
+
+                                    <td hidden>@a.Sucursal</td>
+
+
+
+                                    @*<td hidden>@cuenta[cuenta.FindIndex(x => x.Id.ToString().StartsWith(a.TipoCuenta))].Denominacion</td>*@
+
+                                    <td hidden>@a.Cuenta</td>
+
+                                    <td class="text-sm-left text-md-center" style="min-width:160px">@a.CBU</td>
+
+
+
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="text-right fixed-bottom bg-white col-lg-8 col-md-8 col-sm-12">
+
+                    <nav class="d-block ">
+
+                        <div class="row">
+                            
+                            <div class="offset-lg-2 offset-3 offset-md-1 col-lg-6 col-4 col-md-6 text-center d-inline ">
+                                Total de Empleados  <b style="font-size: 16px;" class="mr-3 mb-md-1" id="TotEmp"></b>
+                                 <b style="font-size: 16px;" id="TotEmp1" hidden></b>
+                                <b style="font-size: 16px;" id="TotEmpm" hidden></b>
+                                <b style="font-size: 16px;" id="TotImportem" hidden></b>
+                                Total monto <b style="font-size: 16px;" id="TotImporte"></b>
+                            </div>
+                            
+                            <div class="col-lg-12 col-10 col-md-10  text-center">
+                                <a class="btn btn-warning rounded float-left" href="@Url.Action("SeleccionarConvenioView","Home")">Volver</a>
+                                <a class="btn btn-warning rounded text-right float-right mr-lg-3" href="@Url.Action("Resumen","Empleado")" id="btnSiguiente">siguiente</a>
+                            </div>
+                        </div>
+
+                    </nav>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+               
+        </div>
+</div>
+
+
+

@@ -1,0 +1,153 @@
+﻿@model Micrositio_Acreditacion.Models.Empresa
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="">
+    <nav class="navbar  border-bottom border-warning ">
+
+        <a href="#" class="navbar-brand ml-2"><img src="https://www.bancosanjuan.com/cobraconqr/images/logos/logo_BSJ_color.png" alt="logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-3" aria-expanded="false" aria-label="true">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+       <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+                <li class="nav-item mr-2">
+
+                </li>
+                <li class="nav-item mr-2">
+
+                    </a>
+                </li>
+
+                <li class="nav-item mr-2">
+
+                </li>
+
+            </ul>
+        </div>
+
+    </nav>
+    <div class="" style="background-position: center;background-image: url(@Url.Content("~/Img/fondo.jpg"));">
+        <div class="numero col-md-10" >
+            <!-- Tab panes -->
+            <div class="tab-content bg-white " style="height:500px;">
+                <div id="edit" class="container tab-pane active">
+                    <br>
+                    <h3>Corrobore los datos de su empresa</h3>
+                    <form method="post" action="@Url.Action("GuardarEdit","Home")" onsubmit="return validarEditEmpresa()">
+                        <div class="form-group row">
+
+                            <label hidden for="CodEmp">Codigo de empresa</label>
+                            <input type="text" hidden class="form-control form-control" placeholder="CodEmp" name="CodEmp" value="@Model.CodEmp" id="CodEmp" readonly>
+
+                            <div class="col-3">
+                                <label for="RazonSocial">Razón Social</label>
+                                <input type="text" class="form-control form-control" placeholder="Razon Social" name="RazonSocial" value="@Model.RazonSocial" id="RazonSocial" readonly>
+                            </div>
+
+                            <div class="col-2">
+                                <label for="Cuit">CUIT</label>
+                                <input type="text" class="form-control form-control " placeholder="Cuit" name="Cuit" value="@Model.Cuit" id="Cuit" readonly>
+                            </div>
+
+                            <div class="col-5">
+                                <label for="dom">Domicilio</label>
+                                <input type="text" class="form-control form-control  mr-3" placeholder="Domicilio" value="@Model.Domicilio" name="Domicilio" id="domicilio">
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-5">
+                                <label for="tel">Telefono</label>
+                                <input type="text" class="form-control form-control " placeholder="Telefono" value="@Model.Telefono" name="Telefono" id="telefono" data-toggle="tooltip" data-placement="right" title="ejemplo 264******">
+                            </div>
+
+                            <div class="col-5">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control form-control " placeholder="Email" value="@Model.Email" name="Email" id="email">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <div class="col text-center">
+                                <label for="numDeb">Número de cuenta de débito</label>
+                                <input type="text" class="offset-4 form-control w-25" placeholder="N° cuenta de debito" value="@Model.NumeroDeCta" name="NumeroDeCta" id="numDeb">
+                            </div>
+
+                        </div>
+
+
+                        <div class="modal-footer text-center">
+                            <button type="submit" class="btn btn-success float-right" onclick="alert('Datos Guardados satifactoriamente')">Guardar</button>
+
+                        </div>
+                    </form>
+                    <div class="col">
+
+                        <a class="btn btn-warning" href="@Url.Action("Index","Home")">Volver</a>
+
+                        @*<button class="btn btn-primary d-inline float-right"><i class="fa fa-forward" aria-hidden="true"><a href="@Url.Action("Index","Empleado")">Siguiente</a></i> </button>*@
+
+
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+
+        <div class="numero col-2">
+            
+        </div>
+    </div>
+</div>
+
+
+@*<form method="post" action="@Url.Action("FuncEdit","Home")">
+        <div class="form-group row">
+            <div class="col">
+                <label for="codEmp">Razón Social</label>
+                <input type="text" class="form-control form-control-lg" placeholder="Razon Social" readonly="true" name="RazonSocial" value="@Model.RazonSocial" id="RazonSocial">
+            </div>
+
+            <div class="col">
+                <label for="dom">Domicilio</label>
+                <input type="text" class="form-control form-control-lg" placeholder="Domicilio" value="@Model.Domicilio" name="Domicilio" id="Domicilio">
+            </div>
+
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col">
+                <label for="tel">Telefono</label>
+                <input type="text" class="form-control form-control-lg" placeholder="Telefono" value="@Model.Telefono" name="Telefono" id="Telefono">
+            </div>
+
+            <div class="col">
+                <label for="email">Email</label>
+                <input type="text" class="form-control form-control-lg" placeholder="Email" value="@Model.Email" name="Email" id="Email">
+            </div>
+        </div>
+
+        <div class="form-group row">
+
+            <div class="col text-center">
+                <label for="numDeb">Número de cuenta de débito</label>
+                <input type="text" class="form-control form-control-lg" placeholder="N° cuenta de debito" value="@Model.NumeroDeCta" name="NumeroDeCta" id="NumeroDeCta">
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer text-center">
+            <button type="submit" class="btn btn-success" onclick="alert('Datos Guardados satifactoriamente')">Guardar</button>
+            <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+        </div>
+    </form>*@

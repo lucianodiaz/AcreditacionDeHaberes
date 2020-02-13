@@ -1,0 +1,178 @@
+﻿@using Micrositio_Acreditacion.Services
+@using Micrositio_Acreditacion.Models
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Micrositio_Acreditacion.Models.Preview>
+
+@{
+    DataAccess ds = new DataAccess();
+    Global.setAcreditacion(ds.ListBoxAcre());
+    var fechaOrden = "";
+    var acreditacion = Global.GetAcreditacion();
+    ViewBag.Title = "AnalisisReporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class=" row " style="background-position: center;background-image:url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+    <div class="numero col-sm-12 col-md-8 bg-white" style="overflow-x: hidden;
+          overflow-y: auto; height:650px; width: 100%;">
+
+
+
+
+        <div class="tab-content ">
+            <div id="index" class=" tab-pane active">
+                <div class="col-12 ">
+
+
+                    <nav class="d-inline-block offset-lg-5" data-spy="affix" data-offset-top="205">
+                        <div class=" col-8 text-center d-inline">
+                            <form action="@Url.Action("AnalisisReporte","Empleado")" method="post" id="formAnalisis">
+                                <label for="acre">Seleccione el tipo de acreditacion</label><br>
+                                <select name="acreditacion" id="acreAnalisis">
+                                    <option value="">Seleccione el servicio</option>
+                                    @foreach (var a in acreditacion)
+                                    {
+                                        if (Global.GetGlobalAcreditacion() == a.Codigo)
+                                        {
+                                            <option value="@a.Codigo" selected>@Global.getRSSession() - @a.Denominacion</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@a.Codigo" >@Global.getRSSession() - @a.Denominacion</option>
+                                        }
+
+                                    }
+                                </select>
+                            </form>
+                        </div>
+                    </nav>
+
+
+
+                    <!--   <button class="btn btn-warning d-inline float-left" data-toggle="modal" data-target="#newEmp-modal-grid">Nuevo</button>
+                    -->
+                    <!-- <form action="" id="editForm">
+                      <input type="text" id="Id" name="Id" hidden="">
+                      <button class="btn btn-warning d-inline float-left" id="btnEdit" onclick="return disableEdit()" disabled="true"  >Editar</button>
+                    </form> -->
+                    <!-- <button class="btn btn-warning d-inline float-left" id="btnEdit" onclick="return disableEdit()" disabled="true" data-toggle="modal" data-target="#editEmp-modal-grid"  >Editar</button> -->
+                    <!--  <form action="error.php" method="post" onsubmit="return confirm('¿Esta seguro que quiere eliminar los registros seleccionados?');">
+                       <input type="text" id="deleteInput" name="deleteInput" hidden="">
+                       <button type="submit" class="btn btn-warning float-left" onclick="return disable()" id="btnDelete" disabled="">Dar de baja</button>
+                     </form> -->
+                    <!--  <button class="btn btn-warning d-inline float-left" data-toggle="modal" data-target="#deleteEmp-modal-grid" id="btnDelete" onclick="return disable()" disabled="true"  >Eliminar Empleado</button> -->
+
+
+                </div>
+
+            </div>
+
+
+            <div class="col-11 col-md-12 col-lg-10 offset-lg-1  table-responsive " style="overflow-y: auto; height:330px;">
+                <table id="table1n" class="table table-striped table-sm" align="center" cellpadding="2" style="overflow-y: scroll; overflow-x: scroll;">
+
+                    <thead class="clearfix text-center">
+                        <tr hidden>
+                            <th scope="col" class="column-head"><span id="orden" onclick="sortAsDate(this.parentNode)">Date</span></th>
+                        </tr>
+                        <tr>
+
+                            <th>Fecha </th>
+                            <th>Cantidad Empleados </th>
+                            <th>Total Importe </th>
+                            <th style="width: 50px;">Archivo </th>
+
+
+
+
+                        </tr>
+
+                    </thead>
+                    <tbody style="overflow-x: scroll;  " class="text-center">
+                        <!-- valor hiden para que funcione el evento outfocus -->
+                        <!-- //////////////////////////////////////// -->
+
+                        @foreach (var p in Model)
+                        {
+                            <tr>
+                        
+                                <!-- <td id="prfn " ><form  action="lasssla.php" method="post" id="idform" class="idform"><input type="text" value="1" name="Id" id="Id" class="id"></form></td> -->
+                                <td>@{
+                                    fechaOrden = p.fecha;
+                                    fechaOrden =fechaOrden.Insert(2, "/");
+                                    fechaOrden = fechaOrden.Insert(5, "/20");
+                                }
+                                @fechaOrden
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => p.ingresados)</td>
+
+                                <td>$@Html.DisplayFor(modelItem => p.Montoaceptados)</td>
+
+                                <td>
+                                    <form action="@Url.Action("GenerarReporte","Empleado")" method="post">
+                                        <input type="text" name="fecha" value="@p.fecha" hidden />
+                                        <button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        
+
+                    </tbody>
+                </table>
+
+            </div>
+            
+                <nav aria-label="paginas">
+                    @*<ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">anterior</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">siguiente</a>
+                </li>
+            </ul>*@
+
+
+                    
+                    <div class="col-10 pagination float-right">
+                        <b>@Html.PagedListPager(Model, i => Url.Action("AnalisisReporte", "Empleado", new { i }), new PagedListRenderOptions { LinkToFirstPageFormat = "<<", LinkToPreviousPageFormat = "<", LinkToNextPageFormat = ">", LinkToLastPageFormat = ">>" })</b>
+                    </div>
+                    
+
+                </nav>
+            
+            <b style="font-size: 16px;" id="TotEmp" hidden=""></b>
+            <b hidden="" style="font-size: 16px;" id="totalGral"></b>
+            <b hidden="" style="font-size: 16px;" id="TotImportem"></b>
+            <b hidden="" style="font-size: 16px;" id="TotImporte"></b>
+            <b hidden="" style="font-size: 16px;" id="TotEmpm"></b>
+            <b hidden="" style="font-size: 16px;" id="TotEmp1"></b>
+
+            <div class="text-right fixed-bottom bg-white col-lg-8 col-md-8 col-sm-12">
+
+                <nav class=" ">
+
+
+                    <div class="col-lg-10 col-12 ">
+                        <a href="@Url.Action("Index","Home")" class="btn rounded btn-warning text-right float-left">volver</a>
+                       
+                    </div>
+            
+
+            </nav>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+

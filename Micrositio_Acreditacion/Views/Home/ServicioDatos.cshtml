@@ -1,0 +1,104 @@
+﻿@using Micrositio_Acreditacion.Services
+@{
+    ViewBag.Title = "ServicioDatos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var empresa = Global.GetEmpresa();
+}
+
+<div class="">
+
+    <div class="" style="background-position: right;background-image: url(@Url.Content("~/Img/fondo.jpg")); background-size: cover;">
+        <div class="numero col-md-7 bg-white" style="overflow-x: hidden;
+        overflow-y: auto; height:650px; width: 100%;">
+            <h5 class="text-center ">Obtenga sus datos del servicio</h5>
+
+
+            <div class="tab-content mt-5">
+                <div id="index" class="container tab-pane active">
+
+                    <div class="offset-1 col-8 table-responsive " style="">
+                        <br>
+                        <table class="table table-striped table-responsive  " style="border: none;">
+                            <thead>
+                                <tr>
+                                    <th colspan="4" class="text-center">Nombre  de la Empresa</th>
+                                    <th colspan="4" class="text-center">CUIT</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td colspan="4" class=" text-center"><input type="text" class="ml-lg-3 text-center form-control w-75" readonly="true" value="@Global.getRSSession()"></td>
+                                <td colspan="4" class="text-center"><input type="text" class="ml-lg-3 text-center form-control w-75" readonly="true" value="@Global.getSession()"></td>
+                            </tr>
+
+                            <thead>
+                                <tr>
+                                    <th colspan="8" class="text-center">Número de convenio</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td colspan="8" class=" " align="center"><input type="text" class=" form-control w-25 text-center" value="@empresa.nConvenio" readonly="true"></td>
+
+                            </tr>
+                            <thead>
+                                <tr>
+                                    <th colspan="8" class="text-center">Detalles de la cuenta de débito</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="text-center">Tipo</th>
+                                    <th colspan="2" class="text-center">Sucursal</th>
+                                    <th colspan="3" class="text-center">Cuenta</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                @if (empresa.TipoCuenta == "1")
+                                {
+                                    <td colspan="3" class="text-center" align="center"><input type="text" class="form-control w-50 text-center" value="CC" readonly="true"></td>
+                                }
+                                else
+                                {
+                                    <td colspan="3" class="text-center" align="center"><input type="text" class="form-control w-50 text-center" value="CA" readonly="true"></td>
+                                }
+
+                                <td colspan="2" class="text-center" align="center"><input type="text" class="form-control w-50 text-center" value="@empresa.Sucursal" readonly="true"></td>
+                                <td colspan="3" class="text-center"><input type="text" class="form-control w-50 text-center" value="@empresa.NumeroDeCta" readonly="true"></td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="col-lg-8 col-12 mb-3 ">
+                <nav class="fixed-bottom d-block col-lg-12 col-12 mb-3">
+                    <div class="col-lg-8 col-12">
+                        
+                        <a href='@Url.Action("Index","Home")' class="btn btn-warning rounded btn-sm d-inline float-left" form="acredForm">Volver</a>
+
+</div>
+                </nav>
+
+                <!-- <button class="btn btn-info d-inline btn-lg rounded">Volver</button> -->
+            </div>
+         
+            <div class="col-12 text-center">
+                <!--  <button type="submit" class="btn rounded  btn-lg text-center btn-warning float-left "><i class="fas fa-warehouse"></i>SELECCIONAR EMPRESA</button>
+             <button type="submit" class="btn  btn-lg text-center btn-warning btn-lg text-center "><i class="fas fa-users"></i>GESTIONAR EMPLEADOS</button>
+             <button type="submit" class="btn  btn-lg text-center btn-warning btn-lg float-right "><i class="fas fa-table"></i>GESTIONAR NOMINA</button> -->
+            </div>
+
+
+
+
+         
+
+
+
+        </div>
+
+
+    </div>
+</div>
+

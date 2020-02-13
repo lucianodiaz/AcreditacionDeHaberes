@@ -1,0 +1,152 @@
+﻿@model Micrositio_Acreditacion.Models.Empleado
+@using Micrositio_Acreditacion.Models
+@using Micrositio_Acreditacion.Services
+@{
+    DataAccess ds = new DataAccess();
+
+    Global.SetSucursal(ds.ListBoxSuc());
+    Global.setAcreditacion(ds.ListBoxAcre());
+    Global.setCuenta(ds.ListBoxCuenta());
+
+    var sucursal = Global.GetSucursal();
+    var acreditacion = Global.GetAcreditacion();
+    var cuenta = Global.GetCuenta();
+
+    ViewData["Title"] = "edit";
+
+    ViewBag.Title = "Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var sep = "-";
+    Model.Importe = Model.Importe.Replace(',', '.');
+}
+
+<div class="">
+    @*<h2>@Global.GetEmpresa().Cuit / @Global.GetEmpresa().RazonSocial</h2>
+        <h5>Control de empleados</h5>*@
+    <nav class="navbar  border-bottom border-warning ">
+
+        <a href="#" class="navbar-brand ml-2"><img src="https://www.bancosanjuan.com/cobraconqr/images/logos/logo_BSJ_color.png" alt="logo"></a>
+
+        <div class="text-center">
+            @Global.GetEmpresa().RazonSocial - @Global.GetEmpresa().Cuit
+        </div>
+        <div class="float-lg-left">
+            @Global.GetGlobalAcreditacion()
+        </div>
+
+    </nav>
+
+    <div class="w-100">
+
+    </div>
+
+    <div class="">
+
+        <div class="" style="background-position: center;background-image: url(@Global.getImage());">
+            <div class="numero col-9" >
+
+
+
+                <div class="tab-content bg-white" style="height:500px;">
+                    <div class="w-100"></div>
+                    <div class="col text-center  mb-5">
+                        <h4>Edita los datos de tu empleado</h4>
+                    </div>
+                    
+                    <div class="">
+                        <form action="@Url.Action("EditFunction","Empleado", new {Model.Id,Model.CodEmp,Model.Importe,Model.Fecha,Model.FechaFormat})" method="post" id="editForm">
+                            <div class="form-group row">
+                                <div class="col-5">
+                                    <label for="codEmp">Nombre completo</label>
+                                    <input type="text" class="form-control" placeholder="Nombre y apellido" value="@Model.Nombre" name="Nombre" id="eNombre">
+                                </div>
+
+                                <div class="col-5">
+                                    <label for="dom">DNI</label>
+                                    <input type="text" class="form-control" placeholder="DNI" value="@Model.Dni" name="DNI" id="eDNI">
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-5">
+                                    <label for="Cuil">CUIL/CUIT</label>
+                                    <input type="text" class="form-control" placeholder="CUIL/CUIT" value="@Model.Cuil" name="Cuil" id="eCuil">
+                                </div>
+
+                                <div class="col-5">
+                                    <label for="Sucursal">Sucursal</label>
+                                    <select class="form-control  bg-white  " name="Sucursal" id="eSucursal" style="height: 35%; ">
+                                        <optgroup label="Seleccione la sucursal"></optgroup>
+                                        <option class="bg-success">@Model.Sucursal</option>
+                                        @foreach (var s in sucursal)
+                                        {
+                                            <option value="@s.Descripcion">@(s.Sucursal + "-" + s.Descripcion)</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-5">
+                                    <label for="TipoCuenta">Tipo de cuenta</label>
+                                    <select class="form-control  bg-white  " name="TipoCuenta" id="eTipoCuenta" style="height: 35%;">
+                                        <optgroup label="Filtre por tipo de cuenta"></optgroup>
+                                        <option class="bg-success">@Model.TipoCuenta</option>
+                                        @foreach (var c in cuenta)
+                                        {
+                                            <option value="@c.Denominacion">@(c.Id + "-" + c.Denominacion)</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+
+                                <div class="col-5">
+                                    <label for="Cuenta">Número de cuenta</label>
+                                    <input type="text" class="form-control" placeholder="N° de cuenta" value="@Model.Cuenta" name="Cuenta" id="eCuenta">
+                                </div>
+                            </div>
+
+
+
+                            <div hidden class="form-group text-center">
+                                <div class="col-5 ">
+                                    <label for="TipoAcred">Tipo de acreditación</label>
+                                    <select name="TipoAcreditacion" id="eTipoacred" class="form-control bg-white" style="height: 35%">
+                                        <optgroup label="Seleccione el tipo de acreditación"></optgroup>
+                                        <option class="bg-success">@Model.TipoAcreditacion</option>
+                                        @foreach (var a in acreditacion)
+                                        {
+                                            <option value="@a.Denominacion">@(a.Codigo + "-" + a.Denominacion)</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-5">
+                                <button type="submit" class="btn btn-success">Guardar</button>
+                                <button class="btn btn-warning" data-dismiss="modal">Volver a Nomina</button>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="numero col-md-2">
+                
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "FiltroAcred";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12">
+
+    <div class="row">
+        <div class="numero col-md-8">
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link disabledTab disabled " data-toggle="tab" href="#index">Crea o Selecciona una empresa</a>
+                </li>
+                <li class="nav-item disabledTab disabled ">
+                    <a class="nav-link disabledTab disabled " data-toggle="tab" href="#edit">Corrobora los datos de la empresa</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link active" data-toggle="tab" href="#acreditacion">Seleccione tipo acreditacion</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="acreditacion" class="container tab-pane active">
+                    <br>
+                    <h3>Filtre sus empleados por tipo de Acreditación</h3>
+
+
+
+
+
+                    <div class="col">
+                        <form action="" method="post">
+                            <select name="TipoAcred" id="TipoAcred" class="form-control">
+                                <option value="Haberes">Haberes</option>
+                            </select>
+
+
+
+                            <div class="col mt-5 mb-5">
+                                <button class="btn btn-warning d-inline "><i class="fa fa-backward" aria-hidden="true"></i> Volver</button>
+
+                                <button type="submit" class="btn btn-primary d-inline float-right"><i class="fa fa-forward" aria-hidden="true"></i>Pasar a gestionar Empleados</button>
+
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="numero col-md-3">
+            imagen
+        </div>
+    </div>
+</div>
+
