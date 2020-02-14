@@ -47,14 +47,12 @@
                 <table id="table1n" class="table table-striped table-sm" align="center" cellpadding="2" style="overflow-y: scroll; overflow-x: scroll;">
 
                     <thead class="clearfix text-center">
-                        <tr hidden>
-                            <th scope="col" class="column-head"><span id="orden" onclick="sortAsDate(this.parentNode)">Date</span></th>
-                        </tr>
+                      
                         <tr>
 
                             <th>Llamada </th>
-                            <th>Fe </th>
-                            <th>Total Importe </th>
+                            <th>Fecha </th>
+                            <th>Total Registros </th>
                             <th style="width: 50px;">Archivo Excel </th>
 
 
@@ -80,14 +78,17 @@
                             <td>@*$@Html.DisplayFor(modelItem => p.Montoaceptados)*@1</td>
 
                             <td>
-                                @*<form action="@Url.Action("GenerarReporte","Empleado")" method="post">
-                                    <input type="text" name="fecha" value="@p.fecha" hidden />
+                                <form action="@Url.Action("GenerarReporteSolicitud","empleado")" method="post">
+                                    @*numero convenio*@
+                                    <input type="text" name="NumConvenio" value="" hidden />
+                                    @*numero llamada*@
+                                    <input type="text" name="Llamada" value="" hidden />
                                     <button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>
-                                </form>*@
-                                <button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>
+                                </form>
+                                @*<button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>*@
                             </td>
                         </tr>
-                                    }
+                                    
 
 
                     </tbody>

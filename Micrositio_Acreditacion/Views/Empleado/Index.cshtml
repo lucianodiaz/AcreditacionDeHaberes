@@ -60,13 +60,18 @@
                          
                         </div>
 
-                        <div class="col-md-5 col-lg-4">
+                        <div class="col-md-6 offset-md-3 mt-4 col-lg-5">
                             <div class="pricingTable h-50">
-                                <span class="icon"><i class="fas fa-user"></i></span>
+                                <span class="icon"><i class="fas fa-folder"></i></span>
                                 <div class="pricingTable-header">
                                     <h1 class="title">Resultado de  </h1><span class="price-value">Solicitudes</span>
                                 </div>
-                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("ResultadoSolicitudes", "Empleado")' class="btn btn-dark rounded-0">IR</a>
+                                <form action="@Url.Action("ResultadoSolicitudes", "Empleado")" method="post">
+                                    <input type="text" name="NumConvenio" value="" hidden />
+                                    @*manda el convenio para listar en la proxima pagina*@
+                                    <button type="submit" class="btn btn-dark rounded-0 ">ir</button>
+                                </form>
+                                @*<ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("ResultadoSolicitudes", "Empleado")' class="btn btn-dark rounded-0">IR</a>*@
                             </div>
 
 
