@@ -112,20 +112,23 @@
                 <table id="table1e" class="table table-striped table-sm" align="" cellpadding="2" style="overflow-y: scroll; overflow-x: scroll;">
                     <thead class="clearfix">
                         <tr>
-
-                            <th>Nombre <a href="@Url.Action("CargarEmpleadosGral","Empleado", new { order = "0"})"><i class="fas fa-sort-up"></i></a>
-                                       <a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "1" })"><i class="fas fa-sort-down"></i></a></th>
+                            <th hidden>Id</th>
+                            <th>Nombre @*<a href="@Url.Action("CargarEmpleadosGral","Empleado", new { order = "0"})"><i class="fas fa-sort-up"></i></a>
+                                       <a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "1" })"><i class="fas fa-sort-down"></i></a>*@</th>
                             <th>DNI </th>
                             <th>CUIL </th>
 
-
-                            <th hidden>Sucursal </th>
+                            <th hidden>Id</th>
+                             <th hidden>Sucursal </th>
 
                             <th hidden>Tipo de cuenta </th>
                             <th hidden>Cuenta </th>
+
+
                             <th>CBU</th>
-                            <th>Estado<a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "2"})"><i class="fas fa-sort-up"></i></a>
-                                      <a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "3"})"><i class="fas fa-sort-down"></i></a></th>
+                            <th>Estado@*<a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "2"})"><i class="fas fa-sort-up"></i></a>
+                                      <a href="@Url.Action("CargarEmpleadosGral","Empleado",  new { order = "3"})"><i class="fas fa-sort-down"></i></a>*@</th>
+                            <th hidden></th>
                             <th>Estado de cuenta</th>
 
 
