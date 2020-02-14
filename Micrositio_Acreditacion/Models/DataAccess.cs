@@ -1139,14 +1139,6 @@ namespace Micrositio_Acreditacion.Models
                 //return null;
 
         }
-
-
-        public void GenerarExcelReporteSolicitud(string llamada)
-        {
-            string CMD = string.Format("exec REPALTAS_sp_GenerarListado '{0}','{1}'", Global.GetEmpresa().nConvenio,llamada);
-            Excel ex = new Excel();
-            ex.GenerarExcel(CMD, "Reporte_" + llamada);
-        }
     }
 
 }

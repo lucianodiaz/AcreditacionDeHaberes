@@ -1,6 +1,4 @@
-﻿@using Micrositio_Acreditacion.Services
-@using Micrositio_Acreditacion.Models
-@model IEnumerable<Micrositio_Acreditacion.Models.ListadoSolicitud>
+﻿
 @{
     ViewBag.Title = "ResultadoSolicitudes";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -67,30 +65,30 @@
                         <!-- valor hiden para que funcione el evento outfocus -->
                         <!-- //////////////////////////////////////// -->
 
-                        @foreach (var p in Model)
-                        {
+                        @*@foreach (var p in Model)
+                        {*@
                             <tr>
 
                                 <!-- <td id="prfn " ><form  action="lasssla.php" method="post" id="idform" class="idform"><input type="text" value="1" name="Id" id="Id" class="id"></form></td> -->
                                 <td>
-                                   @p.Llamada
+                                    2020-02-11 15:09:52.000
                             </td>
-                            <td>@p.Fecha</td>
+                            <td>@*@Html.DisplayFor(modelItem => p.ingresados)*@2020-02-11 15:09:52. 2020-02-11 15:09:52. </td>
 
-                            <td>@p.totalRegistros</td>
+                            <td>@*$@Html.DisplayFor(modelItem => p.Montoaceptados)*@1</td>
 
                             <td>
-                                <form action="@Url.Action("GenerarReporteSolicitud", "empleado")" method="post">
+                                <form action="@Url.Action("GenerarReporteSolicitud","empleado")" method="post">
                                     @*numero convenio*@
-                                    <input type="text" name="nConvenio" value="@Global.GetEmpresa().nConvenio" hidden />
+                                    <input type="text" name="NumConvenio" value="" hidden />
                                     @*numero llamada*@
-                                    <input type="text" name="Llamada" value="@p.Llamada" hidden />
+                                    <input type="text" name="Llamada" value="" hidden />
                                     <button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>
                                 </form>
                                 @*<button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>*@
                             </td>
                         </tr>
-                        }
+                                    
 
 
                     </tbody>
