@@ -31,9 +31,9 @@ namespace Micrositio_Acreditacion.Controllers
         //HUARPES S.R.L.    30681670595
 
 
-        string CuitSesion = "30681670595";
+        string CuitSesion = "30500009442";
 
-        string RazonSocialSession = "HUARPES S.R.L.";
+        string RazonSocialSession = "BANCO DE SAN JUAN S.A";
 
 
         // string RazSocial = "Nuestra empresa Argentina S.R.L";
@@ -132,8 +132,8 @@ namespace Micrositio_Acreditacion.Controllers
                         //LA MILAGROSA S.A.   30507164303
                         //HUARPES S.R.L.    30681670595
 
-                        Cuit = "30681670595",
-                        RazonSocial = "HUARPES S.R.L."
+                        Cuit = "30500009442",
+                        RazonSocial = "BANCO DE SAN JUAN S.A"
                     };
                 }
             }
@@ -147,8 +147,9 @@ namespace Micrositio_Acreditacion.Controllers
                     //HUARPES S.R.L.    30681670595
                     // Cuit = "30681670595",
                     //RazonSocial = "HUARPES S.R.L."
-                    Cuit = "30681670595",
-                    RazonSocial = "HUARPES S.R.L."
+
+                    Cuit = "30500009442",
+                    RazonSocial = "BANCO DE SAN JUAN S.A"
                 };
             }
            
