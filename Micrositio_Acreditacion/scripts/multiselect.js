@@ -1,12 +1,4 @@
-/*
- * Jquery Multiselect插件 中文叫列表多选插件
- * 使用例子:
- * $('table').multiSelect({
- *  actcls: 'active',
- *  selector: 'tbody tr',
- *  callback: false
- * });
- */
+
 (function ($) {
     $.fn.multiSelect = function (options) {
         $.fn.multiSelect.init($(this), options);
@@ -14,14 +6,14 @@
 
     $.extend($.fn.multiSelect, {
         defaults: {
-            actcls: 'active', //选中样式
-            selector: 'tbody tr', //选择的行元素
-            except: ['tbody'], //选中后不去除多选效果的元素队列
-            statics: ['.static'], //被排除行元素条件
-            callback: false //选中回调
+            actcls: 'active', 
+            selector: 'tbody tr', 
+            except: ['tbody'], 
+            statics: ['.static'], 
+            callback: false 
         },
-        first: null, //按shift时，用于记住第一个点击的item
-        last: null, //最后点击的item
+        first: null,
+        last: null, 
         init: function (scope, options) {
             this.scope = scope;
             this.options = $.extend({}, this.defaults, options);
@@ -76,9 +68,7 @@
                 $.isFunction(callback) && callback($(options.selector + '.' + actcls, scope));
             });
 
-            /**
-             * 点击其他处去除选中状态
-             */
+         
             $(document).on('click.mSelect', function (e) {
                 for (var i in options.except) {
                     var except = options.except[i];
@@ -94,9 +84,7 @@
                 $.isFunction(callback) && callback($(options.selector + '.' + actcls, scope));
             });
 
-            /**
-             * Ctrl+A全选
-             */
+            
             $(document).on('keydown.mSelect', function (e) {
                 if ((e.keyCode == 65) && (e.metaKey || e.ctrlKey)) {
                     $(options.selector, scope).each(function () {
@@ -110,9 +98,7 @@
                 }
             });
 
-            /**
-             * 清楚shift按住的状态
-             */
+      
             $(document).on('keyup.mSelect', function (e) {
                 if (e.keyCode == 16) {
                     self.first = null;

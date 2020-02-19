@@ -93,6 +93,7 @@ $(function () {
 
           
             document.getElementById("deleteInput").value = valInput;
+            console.log(valInput);
 
        
 
