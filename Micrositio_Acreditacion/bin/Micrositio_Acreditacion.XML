@@ -570,6 +570,18 @@
                     }</code>
             </example>
         </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.SeleccionarOrdenView">
+            <summary>
+            Selecciona ordenes de extraccion (menu)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Micrositio_Acreditacion.Controllers.HomeController.IngresoSolicitudView(System.Web.HttpPostedFileBase)">
+            <summary>
+            Solicituds the ingreso view.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Micrositio_Acreditacion.MvcApplication">
             <summary>Inicia la aplicacion</summary>
         </member>

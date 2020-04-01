@@ -414,5 +414,23 @@ function validarCBUNew(cbu) {
         return true;
     }
 
+//validacion solicitar archivo
+
+    function ValidarSolicitud() {
+        var archivo = $('#fileSol')[0].files[0];
+        //alert(archivo);
+        
+        if (archivo != null) {
+            
+            
+
+            return true
+        }
+        else {
+            alert("No ha seleccionado un archivo valido vuelva a cargar el archivo.");
+            return false;
+        }
+    }
+
 
 

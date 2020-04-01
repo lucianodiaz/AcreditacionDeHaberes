@@ -400,5 +400,62 @@ namespace Micrositio_Acreditacion.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Selecciona ordenes de extraccion (menu)
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SeleccionarOrdenView()
+        {
+           
+            return View();
+        }
+
+
+        /// <summary>
+        /// Solicituds the ingreso view.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult IngresoSolicitudView(HttpPostedFileBase fileSol)
+        {
+           
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SolicitudGuardarArchivo(HttpPostedFileBase file)
+        {
+            string cuitEmpresa = Global.GetEmpresa().Cuit ;
+            string fechaSubida = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string nombreArchivo = file.FileName;
+
+            string registroNombre = cuitEmpresa + "_" + fechaSubida + "_" + nombreArchivo;
+
+            var supportedTypes = new[] {"doc", "docx", "xls", "xlsx" };//tipos de archivo
+            var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+            if (!supportedTypes.Contains(fileExt))
+            {
+                ViewBag.Message = "La extensión del archivo es inválida - deben ser WORD/EXCEL";
+                
+            }
+
+            else if (file != null && file.ContentLength > 0)
+                try
+                {
+                    string path = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
+                                               Path.GetFileName(registroNombre));
+                    file.SaveAs(path);
+                    ViewBag.Message = "Archivo guardado exitosamente.";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                }
+            else
+            {
+                ViewBag.Message = "No hay archivo especificado";
+            }
+            return View("IngresoSolicitudView");
+        }
+
     }
 }
