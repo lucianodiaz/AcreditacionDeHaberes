@@ -430,7 +430,7 @@ namespace Micrositio_Acreditacion.Controllers
 
             string registroNombre = cuitEmpresa + "_" + fechaSubida + "_" + nombreArchivo;
 
-            var supportedTypes = new[] {"doc", "docx", "xls", "xlsx" };//tipos de archivo
+            var supportedTypes = new[] {"doc", "docx", "xls", "xlsx","jpg","png","jpeg","pdf" };//tipos de archivo
             var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
             if (!supportedTypes.Contains(fileExt))
             {
