@@ -44,5 +44,13 @@ namespace Micrositio_Acreditacion.Models
         /// <summary>Gets o sets la sucursal.</summary>
         /// <value>Sucursal.</value>
         public string Sucursal { get; set; }
+        //menu        
+        /// <summary>
+        /// Gets or sets the menu.
+        /// </summary>
+        /// <value>
+        /// The menu.
+        /// </value>
+        public int Menu { get; set; }
     }
 }

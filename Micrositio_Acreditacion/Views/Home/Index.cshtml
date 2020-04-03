@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var cuitSession = Global.getSession();
     var RsSession = Global.getRSSession();
+    var empresa = Global.GetEmpresa();
+
 }
 <div class=" ">
 
@@ -60,21 +62,26 @@
                        
 
                     </div>
-                    @*nuevo*@ 
-                    <div class="row text-center mt-2 d-flex align-self-center mr-3 mr-md-0 mb-1">
-                        <div class="col-md-6 offset-md-3 mt-4 col-lg-5">
-                            <div class="pricingTable">
-                                <span class="icon"><i class="fas fa-table"></i></span>
-                                <div class="pricingTable-header">
-                                    <h1 class="title">Gestione su </h1><span class="price-value">orden de extraccion</span>
+                    @*nuevo  @empresa.Menu *@ 
+
+                    @if (@empresa.Menu == 1)
+                    {
+                        <div class="row text-center mt-2 d-flex align-self-center mr-3 mr-md-0 mb-1">
+                            <div class="col-md-6 offset-md-3 mt-4 col-lg-5">
+                                <div class="pricingTable">
+                                    <span class="icon"><i class="fas fa-table"></i></span>
+                                    <div class="pricingTable-header">
+                                        <h1 class="title">Gestione su </h1><span class="price-value">orden de extraccion</span>
+                                    </div>
+                                    <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("SeleccionarOrdenView","Home")' class="btn btn-dark rounded-0">IR</a>
                                 </div>
-                                <ul class="list-unstyled pricing-content"></ul><a href='@Url.Action("SeleccionarOrdenView","Home")' class="btn btn-dark rounded-0">IR</a>
                             </div>
+
+
+
                         </div>
-                 
-
-
-                    </div>
+                    }
+                   
 
 
                 </div>

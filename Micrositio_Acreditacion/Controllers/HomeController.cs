@@ -13,6 +13,7 @@ using RestSharp;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using OfficeOpenXml;
 
 namespace Micrositio_Acreditacion.Controllers
 {
@@ -232,10 +233,11 @@ namespace Micrositio_Acreditacion.Controllers
 
                 if (Global.getSession() != "" || Global.getSession() != null)
                 {
+                    Global.SetEmpresa(da.AddEmpresa());
                     Global.SetEmpresa(da.GetLocalEmpresa(Global.getSession()));
 
 
-                    Global.SetEmpresa(da.AddEmpresa());
+                    
 
                     if (Global.GetEmpresa() == null)
                     {
@@ -430,11 +432,11 @@ namespace Micrositio_Acreditacion.Controllers
 
             string registroNombre = cuitEmpresa + "_" + fechaSubida + "_" + nombreArchivo;
 
-            var supportedTypes = new[] {"doc", "docx", "xls", "xlsx","jpg","png","jpeg","pdf" };//tipos de archivo
+            var supportedTypes = new[] { "xls", "xlsx" };//tipos de archivo
             var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
             if (!supportedTypes.Contains(fileExt))
             {
-                ViewBag.Message = "La extensión del archivo es inválida - deben ser WORD/EXCEL";
+                ViewBag.Message = "El archivo es inválida - deben ser formato EXCEL";
                 
             }
 
@@ -444,6 +446,28 @@ namespace Micrositio_Acreditacion.Controllers
                     string path = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
                                                Path.GetFileName(registroNombre));
                     file.SaveAs(path);
+                   
+
+                    var myFileInfo = new FileInfo(path);
+                   // myFileInfo.Delete(); //para borrar el archivo ORIGINAL
+                  
+                    using (var pack = new ExcelPackage(myFileInfo))
+                    {
+                        var ws = pack.Workbook.Worksheets.FirstOrDefault();
+                        //datos de la cabecera
+                        var cuilExcel = ws.Cells[2, 2].Value;
+                        var tipoCueExcel = ws.Cells[3, 2].Value;
+                        var sucExcel = ws.Cells[4, 2].Value;
+                        var nroCueExcel = ws.Cells[5, 2].Value;
+                        var digVerExcel = ws.Cells[6, 2].Value;
+                        ws.DeleteRow(1, 9, true);
+                        
+                        //nuevo archivo para procesar contenido(solo los empleados)
+                        pack.SaveAs(new FileInfo(path+".xls"));
+                        var copiaExcel = new FileInfo(path + ".xls");
+                       // copiaExcel.Delete(); //borra archivo creado
+                    }
+
                     ViewBag.Message = "Archivo guardado exitosamente.";
                 }
                 catch (Exception ex)

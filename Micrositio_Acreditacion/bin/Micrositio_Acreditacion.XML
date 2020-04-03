@@ -711,6 +711,14 @@
             <summary>Gets o sets la sucursal.</summary>
             <value>Sucursal.</value>
         </member>
+        <member name="P:Micrositio_Acreditacion.Models.Empresa.Menu">
+            <summary>
+            Gets or sets the menu.
+            </summary>
+            <value>
+            The menu.
+            </value>
+        </member>
         <member name="T:Micrositio_Acreditacion.Models.Preview">
             <summary>Modelo Preview</summary>
         </member>

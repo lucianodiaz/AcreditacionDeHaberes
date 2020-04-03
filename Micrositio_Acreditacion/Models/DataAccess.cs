@@ -89,7 +89,9 @@ namespace Micrositio_Acreditacion.Models
                     nConvenio = ds.Tables[0].Rows[0]["nConvenio"].ToString(),
                     NumeroDeCta = ds.Tables[0].Rows[0]["NumCuenta"].ToString(),
                     TipoCuenta = ds.Tables[0].Rows[0]["TipoCue"].ToString(),
-                    Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString()
+                    Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString(),
+                    
+
                 };
     
             }
@@ -143,7 +145,9 @@ namespace Micrositio_Acreditacion.Models
         {
             try
             {
-                string CMD = string.Format("Select * from Empresas where CUIT = '{0}'", Cuit);
+                //string CMD = string.Format("Select * from Empresas where CUIT = '{0}'", Cuit);
+                string CMD = string.Format("EXEC SP_Get_Empresa '{0}'", Cuit);
+
                 DataSet ds = Utilidades.Exec(CMD);
 
                 return new Empresa()
@@ -155,12 +159,14 @@ namespace Micrositio_Acreditacion.Models
                     nConvenio = ds.Tables[0].Rows[0]["nConvenio"].ToString(),
                     NumeroDeCta = ds.Tables[0].Rows[0]["NumCuenta"].ToString(),
                     TipoCuenta = ds.Tables[0].Rows[0]["TipoCue"].ToString(),
-                    Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString()
-                   
+                    Sucursal = ds.Tables[0].Rows[0]["SucCod"].ToString(),
+                    Menu = Convert.ToInt32(ds.Tables[0].Rows[0]["idmenu"]),
+
                 };
             }
             catch (Exception e)
             {
+                var error = e.Message;
                 log.Error(e.Message);
                 return new Empresa()
                 { };
