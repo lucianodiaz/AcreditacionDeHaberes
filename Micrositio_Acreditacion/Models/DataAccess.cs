@@ -1192,29 +1192,29 @@ namespace Micrositio_Acreditacion.Models
                         //    //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
                         //}
 
-                        List<string> ColQuitar = new List<string>();
-                        for (int i = 0; i < ldsExcel.Tables[0].Columns.Count; i++)
-                        {
-                            string colname = ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper();
-                            if (ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "DNI" &&
-                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "APELLIDO Y NOMBRE" &&
-                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "IMPORTE" &&
-                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "CELULAR" &&
-                                 ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "COMPAÑÍA CELULAR" &&
-                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "EMAIL")
-                            {
-                                //ldsExcel.Tables[0].Columns.RemoveAt(i);
-                                ColQuitar.Add(ldsExcel.Tables[0].Columns[i].ColumnName);
-                            }
-                        }
-                        //Si hay columnas a remover
-                        if (ColQuitar.ToArray().Count() > 0)
-                        {
-                            foreach (string colu in ColQuitar.ToArray())
-                            {
-                                ldsExcel.Tables[0].Columns.Remove(colu);
-                            }
-                        }
+                        //List<string> ColQuitar = new List<string>();
+                        //for (int i = 0; i < ldsExcel.Tables[0].Columns.Count; i++)
+                        //{
+                        //    string colname = ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper();
+                        //    if (ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "DNI" &&
+                        //        ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "APELLIDO Y NOMBRE" &&
+                        //        ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "IMPORTE" &&
+                        //        ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "CELULAR" &&
+                        //         ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "COMPAÑÍA CELULAR" &&
+                        //        ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "EMAIL")
+                        //    {
+                        //        //ldsExcel.Tables[0].Columns.RemoveAt(i);
+                        //        ColQuitar.Add(ldsExcel.Tables[0].Columns[i].ColumnName);
+                        //    }
+                        //}
+                        ////Si hay columnas a remover
+                        //if (ColQuitar.ToArray().Count() > 0)
+                        //{
+                        //    foreach (string colu in ColQuitar.ToArray())
+                        //    {
+                        //        ldsExcel.Tables[0].Columns.Remove(colu);
+                        //    }
+                        //}
 
                         try
                         {
