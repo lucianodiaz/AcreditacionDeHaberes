@@ -1163,7 +1163,7 @@ namespace Micrositio_Acreditacion.Models
             switch (selector)
             {
                 case 0:
-                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha,cuenta ,nombreArchivo, selector);
+                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha,nombreArchivo ,cuenta, selector);
                     DataSet ds = Utilidades.Exec(CMD);
                     break;
                 case 1:
@@ -1229,7 +1229,7 @@ namespace Micrositio_Acreditacion.Models
 
 
                     }
-                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha, cuenta, nombreArchivo, selector);
+                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha, nombreArchivo, cuenta, selector);
                     DataSet ds1 = Utilidades.Exec(CMD);
 
                     break;
