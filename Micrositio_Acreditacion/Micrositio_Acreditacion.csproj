@@ -466,6 +466,7 @@
     <Content Include="Views\Empleado\ResultadoSolicitudes.cshtml" />
     <Content Include="Views\Home\SeleccionarOrdenView.cshtml" />
     <Content Include="Views\Home\IngresoSolicitudView.cshtml" />
+    <Content Include="Views\Home\VerSolicitudView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -462,9 +462,17 @@ namespace Micrositio_Acreditacion.Controllers
 
                     using (var pack = new ExcelPackage(myFileInfo))
                     {
+                        
                         var ws = pack.Workbook.Worksheets.FirstOrDefault();
                         //datos de la cabecera
                         var cuilExcel = ws.Cells[2, 2].Value.ToString();
+
+                        if (cuilExcel != cuitEmpresa)
+                        {
+                            ViewBag.Message = "El cuit de la empresa y del documento no coinciden.";
+                            return View("IngresoSolicitudView");
+                        }
+
                         var tipoCueExcel = ws.Cells[3, 2].Value.ToString();
                         var sucExcel = ws.Cells[4, 2].Value.ToString();
                         var nroCueExcel = ws.Cells[5, 2].Value.ToString();
@@ -479,14 +487,14 @@ namespace Micrositio_Acreditacion.Controllers
                         da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, path,numeroCuenta,nombreArchivo,0,"");
                         //nuevo archivo para procesar contenido(solo los empleados)
                         string pathCopia = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
-                                            Path.GetFileName("copia" +registroNombre + ".xlsx"));
+                                            Path.GetFileName("copia" +registroNombre + fileExt));
                         pack.SaveAs(new FileInfo(pathCopia));
                         var copiaExcel = new FileInfo(pathCopia);
                         
 
                         //paso 3 guardar los empleados 
 
-                        da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, pathCopia, numeroCuenta,nombreArchivo,1,".xlsx");
+                        da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, pathCopia, numeroCuenta,nombreArchivo,1, fileExt);
                        // copiaExcel.Delete(); //borra archivo creado
                     }
 
@@ -503,6 +511,13 @@ namespace Micrositio_Acreditacion.Controllers
                 ViewBag.Message = "No hay archivo especificado";
             }
             return View("IngresoSolicitudView");
+        }
+
+
+        public ActionResult VerSolicitudView( )
+        {
+
+            return View();
         }
 
     }
