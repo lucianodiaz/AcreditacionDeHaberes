@@ -1159,12 +1159,21 @@ namespace Micrositio_Acreditacion.Models
 
         public void ProcesoMunicipalidad(string cuitEmpresa, string fecha, string rutaArchivo, string cuenta,string nombreArchivo, int selector,string extencion)
         {
-            string CMD = "";
+            
             switch (selector)
             {
                 case 0:
-                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha,nombreArchivo ,cuenta, selector);
-                    DataSet ds = Utilidades.Exec(CMD);
+                    string CMD = string.Format("exec SP_municipalidad '{0}','{1}','{2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha,nombreArchivo ,cuenta, selector);
+                    try
+                    {
+                        DataSet ds = Utilidades.Exec(CMD);
+                    }
+                    catch (Exception e)
+                    {
+                        Global.setError(e.Message);
+                        throw;
+                    }
+                    
                     break;
                 case 1:
                     Excel excel = new Excel();
@@ -1229,8 +1238,8 @@ namespace Micrositio_Acreditacion.Models
 
 
                     }
-                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha, nombreArchivo, cuenta, selector);
-                    DataSet ds1 = Utilidades.Exec(CMD);
+                    string CMD2 = string.Format("exec SP_municipalidad '{0}','{1}','{2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha, nombreArchivo, cuenta, selector);
+                    DataSet ds1 = Utilidades.Exec(CMD2);
 
                     break;
 
