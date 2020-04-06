@@ -1153,6 +1153,24 @@ namespace Micrositio_Acreditacion.Models
             Excel ex = new Excel();
             ex.GenerarExcel(CMD, "Reporte_" + llamada);
         }
+
+
+
+        public void ProcesoMunicipalidad(string cuitEmpresa, string fecha, string nombreArchivo, string cuenta, int selector,string extencion)
+        {
+            switch (selector)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
 }

@@ -449,26 +449,42 @@ namespace Micrositio_Acreditacion.Controllers
                    
 
                     var myFileInfo = new FileInfo(path);
-                   // myFileInfo.Delete(); //para borrar el archivo ORIGINAL
-                  
+                    // myFileInfo.Delete(); //para borrar el archivo ORIGINAL
+
+                    //Primer paso guardar los datos del archivo
+                    da.ProcesoMunicipalidad(cuitEmpresa,fechaSubida,nombreArchivo,"",0,"");
+
+
                     using (var pack = new ExcelPackage(myFileInfo))
                     {
                         var ws = pack.Workbook.Worksheets.FirstOrDefault();
                         //datos de la cabecera
-                        var cuilExcel = ws.Cells[2, 2].Value;
-                        var tipoCueExcel = ws.Cells[3, 2].Value;
-                        var sucExcel = ws.Cells[4, 2].Value;
-                        var nroCueExcel = ws.Cells[5, 2].Value;
-                        var digVerExcel = ws.Cells[6, 2].Value;
+                        var cuilExcel = ws.Cells[2, 2].Value.ToString();
+                        var tipoCueExcel = ws.Cells[3, 2].Value.ToString();
+                        var sucExcel = ws.Cells[4, 2].Value.ToString();
+                        var nroCueExcel = ws.Cells[5, 2].Value.ToString();
+                        var digVerExcel = ws.Cells[6, 2].Value.ToString();
                         ws.DeleteRow(1, 9, true);
-                        
+
+                        var numeroCuenta = tipoCueExcel + sucExcel + nroCueExcel + digVerExcel;
+
+
+                        //aca tengo que guardar los datos todos los var
+                        //paso 2 guardar primera parte del excel
+                        da.ProcesoMunicipalidad(cuitEmpresa, fechaSubida, nombreArchivo, numeroCuenta, 1, "");
                         //nuevo archivo para procesar contenido(solo los empleados)
                         pack.SaveAs(new FileInfo(path+".xls"));
                         var copiaExcel = new FileInfo(path + ".xls");
+
+                        //paso 3 guardar los empleados 
+
+                        da.ProcesoMunicipalidad(cuitEmpresa, fechaSubida, nombreArchivo, numeroCuenta, 2, ".xls");
                        // copiaExcel.Delete(); //borra archivo creado
                     }
 
                     ViewBag.Message = "Archivo guardado exitosamente.";
+
+                  
                 }
                 catch (Exception ex)
                 {
