@@ -449,6 +449,7 @@ namespace Micrositio_Acreditacion.Controllers
                 {
                     string path = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
                                                Path.GetFileName(registroNombre));
+                    //string saveDir = Server.MapPath("~/uploads/");
                     file.SaveAs(path);
                    
 
@@ -477,12 +478,15 @@ namespace Micrositio_Acreditacion.Controllers
                         //paso 2 guardar primera parte del excel
                         da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, path,numeroCuenta,nombreArchivo,0,"");
                         //nuevo archivo para procesar contenido(solo los empleados)
-                        pack.SaveAs(new FileInfo(path+".xls"));
-                        var copiaExcel = new FileInfo(path + ".xls");
+                        string pathCopia = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
+                                            Path.GetFileName("copia" +registroNombre + ".xlsx"));
+                        pack.SaveAs(new FileInfo(pathCopia));
+                        var copiaExcel = new FileInfo(pathCopia);
+                        
 
                         //paso 3 guardar los empleados 
 
-                        da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, path+".xls",numeroCuenta,nombreArchivo,1,".xls");
+                        da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, pathCopia, numeroCuenta,nombreArchivo,1,".xlsx");
                        // copiaExcel.Delete(); //borra archivo creado
                     }
 
