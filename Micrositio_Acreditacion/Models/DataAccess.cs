@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using ConnDB;
 using System.Data;
 using System.Data.SqlClient;
@@ -1156,15 +1157,81 @@ namespace Micrositio_Acreditacion.Models
 
 
 
-        public void ProcesoMunicipalidad(string cuitEmpresa, string fecha, string nombreArchivo, string cuenta, int selector,string extencion)
+        public void ProcesoMunicipalidad(string cuitEmpresa, string fecha, string rutaArchivo, string cuenta,string nombreArchivo, int selector,string extencion)
         {
+            string CMD = "";
             switch (selector)
             {
                 case 0:
+                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}'", cuitEmpresa,fecha, rutaArchivo,nombreArchivo, selector);
+                    DataSet ds = Utilidades.Exec(CMD);
                     break;
                 case 1:
-                    break;
-                case 2:
+                    Excel excel = new Excel();
+                    using (DataSet ldsExcel = Excel.GetDataTableExcel(rutaArchivo, extencion))
+                    {
+                        //if (!ldsExcel.Tables[0].Columns.Contains("DNI"))
+                        //{
+
+                        //    //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
+                        //}
+                        //if (!ldsExcel.Tables[0].Columns.Contains("APELLIDO Y NOMBRE"))
+                        //{
+                        //    //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
+                        //}
+                        //if (!ldsExcel.Tables[0].Columns.Contains("IMPORTE"))
+                        //{
+                        //    //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
+                        //}
+                        //if (!ldsExcel.Tables[0].Columns.Contains("CELULAR"))
+                        //{
+                        //    //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
+                        //}
+                        //if (!ldsExcel.Tables[0].Columns.Contains("EMAIL"))
+                        //{
+                        //    //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
+                        //}
+
+                        List<string> ColQuitar = new List<string>();
+                        for (int i = 0; i < ldsExcel.Tables[0].Columns.Count; i++)
+                        {
+                            string colname = ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper();
+                            if (ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "DNI" &&
+                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "APELLIDO Y NOMBRE" &&
+                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "IMPORTE" &&
+                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "CELULAR" &&
+                                 ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "COMPAÑÍA CELULAR" &&
+                                ldsExcel.Tables[0].Columns[i].ColumnName.ToUpper() != "EMAIL")
+                            {
+                                //ldsExcel.Tables[0].Columns.RemoveAt(i);
+                                ColQuitar.Add(ldsExcel.Tables[0].Columns[i].ColumnName);
+                            }
+                        }
+                        //Si hay columnas a remover
+                        if (ColQuitar.ToArray().Count() > 0)
+                        {
+                            foreach (string colu in ColQuitar.ToArray())
+                            {
+                                ldsExcel.Tables[0].Columns.Remove(colu);
+                            }
+                        }
+
+                        try
+                        {
+                            excel.InsertarDatosExcel(ldsExcel, "Micrositio_Haberes_Municipalidad" + cuitEmpresa + nombreArchivo);
+                        }
+                        catch (Exception e)
+                        {
+                            Global.setError(e.Message);
+                            //return View("CargarEmpleadosGral", da.ListEmpleado(true, 0).ToList());
+                            throw;
+                        }
+
+
+                    }
+                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{¨2}','{3}','{4}'", cuitEmpresa, fecha, rutaArchivo, nombreArchivo, selector);
+                    DataSet ds1 = Utilidades.Exec(CMD);
+
                     break;
 
                 default:
