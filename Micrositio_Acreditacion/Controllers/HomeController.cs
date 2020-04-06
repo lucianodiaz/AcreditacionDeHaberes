@@ -452,7 +452,7 @@ namespace Micrositio_Acreditacion.Controllers
                     // myFileInfo.Delete(); //para borrar el archivo ORIGINAL
 
                     //Primer paso guardar los datos del archivo
-                    da.ProcesoMunicipalidad(cuitEmpresa,fechaSubida,nombreArchivo,"",0,"");
+                    //da.ProcesoMunicipalidad(cuitEmpresa,fechaSubida,path,"",nombreArchivo,0,"");
 
 
                     using (var pack = new ExcelPackage(myFileInfo))
@@ -471,14 +471,14 @@ namespace Micrositio_Acreditacion.Controllers
 
                         //aca tengo que guardar los datos todos los var
                         //paso 2 guardar primera parte del excel
-                        da.ProcesoMunicipalidad(cuitEmpresa, fechaSubida, nombreArchivo, numeroCuenta, 1, "");
+                        da.ProcesoMunicipalidad(cuitEmpresa,fechaSubida,path,numeroCuenta,nombreArchivo,0,"");
                         //nuevo archivo para procesar contenido(solo los empleados)
                         pack.SaveAs(new FileInfo(path+".xls"));
                         var copiaExcel = new FileInfo(path + ".xls");
 
                         //paso 3 guardar los empleados 
 
-                        da.ProcesoMunicipalidad(cuitEmpresa, fechaSubida, nombreArchivo, numeroCuenta, 2, ".xls");
+                        da.ProcesoMunicipalidad(cuitEmpresa,fechaSubida,path+".xls",numeroCuenta,nombreArchivo,1,".xls");
                        // copiaExcel.Delete(); //borra archivo creado
                     }
 
