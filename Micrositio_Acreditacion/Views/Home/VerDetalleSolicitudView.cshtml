@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Micrositio_Acreditacion.Models.DetallesSolicitudesMuni>
+@{
     ViewBag.Title = "VerSolicitudView";
 }
 
@@ -65,26 +66,28 @@
                         <!-- valor hiden para que funcione el evento outfocus -->
                         <!-- //////////////////////////////////////// -->
 
-                        @if (true)
+
+                        @foreach (var m in Model)
                         {
                             <tr>
 
                                 <!-- <td id="prfn " ><form  action="lasssla.php" method="post" id="idform" class="idform"><input type="text" value="1" name="Id" id="Id" class="id"></form></td> -->
                                 <td>
-                                    32750620
+                                    @m.dni
                                 </td>
                                 <td>
-                                    Alan j simpson
+                                    @m.nombre
                                 </td>
-                                <td>300.33</td>
-                                <td>02644585858</td>
-                                <td>MOVISTAR</td>
-                                <td>algo@algo.com</td>
-                               
+                                <td>@m.importe</td>
+                                <td>@m.celular</td>
+                                <td>@m.compcel</td>
+                                <td>@m.email</td>
+
 
                             </tr>
                         }
 
+                        
 
 
 
