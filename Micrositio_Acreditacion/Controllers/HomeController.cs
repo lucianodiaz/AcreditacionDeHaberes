@@ -522,17 +522,17 @@ namespace Micrositio_Acreditacion.Controllers
             //podes poner lo que quieras en archivoid
             //exec SP_Listar_Solicitud_Mun '30500009442',1,3 ; -- los parametros CUIT, selector , archivoid
 
-            return View(da.ListadoDeSolicitudes());
+            return View();
         }
 
-        public ActionResult VerDetalleSolicitudView(string cuitEmpresa, string idCarga)
+        public ActionResult VerDetalleSolicitudView()
         {
 
             //vista que da el datalle que hay en cada excel subido
             //si o si pasa el cuitglobal y el archivoid del formulario 
             //exec SP_Listar_Solicitud_Mun '30500009442',1,3 ; -- los parametros CUIT, selector , archivoid
 
-            return View(da.DetalleSolicitudMuni(cuitEmpresa,idCarga));
+            return View();
         }
 
     }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable< Micrositio_Acreditacion.Models.ListadoSolicitudesMuni>
+﻿
 @{
     ViewBag.Title = "VerSolicitudView";
 }
@@ -65,34 +65,31 @@
                         <!-- valor hiden para que funcione el evento outfocus -->
                         <!-- //////////////////////////////////////// -->
 
-                        @foreach (var m in Model)
+                        @if (true)
                         {
-
                             <tr>
 
                                 <!-- <td id="prfn " ><form  action="lasssla.php" method="post" id="idform" class="idform"><input type="text" value="1" name="Id" id="Id" class="id"></form></td> -->
                                 <td>
-                                    @m.cuit
+                                    3245678955
                                 </td>
                                 <td>
-                                    @m.cuenta
+                                    2012345
                                 </td>
-                                <td>@m.fecha</td>
+                                <td>12-12-20</td>
 
-                                <td>@m.nombreArchivo</td>
+                                <td>algo.xls</td>
                                 <td>
                                     <form action="@Url.Action("VerDetalleSolicitudView","home")" method="post">
                                         @*toma cuit empresa y el id del documento*@
-                                        <input type="text" name="cuitEmpresa" value="@m.cuit" hidden />
-                                        <input type="text" name="idCarga" value="@m.id" hidden />
+                                        <input type="text" name="cuitEmpresa" value="cuit" hidden />
+                                        <input type="text" name="idCarga" value="id" hidden />
                                         <button type="submit" class="btn btn-success "><i class="fas fa-file-download"></i></button>
                                     </form>
                                 </td>
 
                             </tr>
-
                         }
-
 
 
 
