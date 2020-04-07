@@ -470,6 +470,7 @@ namespace Micrositio_Acreditacion.Controllers
                         if (cuilExcel != cuitEmpresa)
                         {
                             ViewBag.Message = "El cuit de la empresa y del documento no coinciden.";
+                            myFileInfo.Delete();
                             return View("IngresoSolicitudView");
                         }
 
@@ -487,15 +488,15 @@ namespace Micrositio_Acreditacion.Controllers
                         da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, path,numeroCuenta,nombreArchivo,0,"");
                         //nuevo archivo para procesar contenido(solo los empleados)
                         string pathCopia = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
-                                            Path.GetFileName("copia" +registroNombre + fileExt));
+                                            Path.GetFileName("copia" +registroNombre ));
                         pack.SaveAs(new FileInfo(pathCopia));
                         var copiaExcel = new FileInfo(pathCopia);
                         
 
                         //paso 3 guardar los empleados 
 
-                        da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, pathCopia, numeroCuenta,nombreArchivo,1, fileExt);
-                       // copiaExcel.Delete(); //borra archivo creado
+                        da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, pathCopia, numeroCuenta,nombreArchivo,1, "."+fileExt);
+                       copiaExcel.Delete(); //borra archivo creado
                     }
 
                     ViewBag.Message = "Archivo guardado exitosamente.";
@@ -516,6 +517,20 @@ namespace Micrositio_Acreditacion.Controllers
 
         public ActionResult VerSolicitudView( )
         {
+
+            //primer listado que va a ver solicitud (los archivos cargados por la empresa)
+            //podes poner lo que quieras en archivoid
+            //exec SP_Listar_Solicitud_Mun '30500009442',1,3 ; -- los parametros CUIT, selector , archivoid
+
+            return View();
+        }
+
+        public ActionResult VerDetalleSolicitudView()
+        {
+
+            //vista que da el datalle que hay en cada excel subido
+            //si o si pasa el cuitglobal y el archivoid del formulario 
+            //exec SP_Listar_Solicitud_Mun '30500009442',1,3 ; -- los parametros CUIT, selector , archivoid
 
             return View();
         }
