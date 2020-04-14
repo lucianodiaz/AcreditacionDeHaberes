@@ -32,8 +32,11 @@ namespace Micrositio_Acreditacion.Controllers
         //HUARPES S.R.L.    30681670595
 
 
-        string CuitSesion = "30500009442";
 
+
+        // --------------------------------------------------------------------comentar o descomentar para testing
+
+        string CuitSesion = "30500009442";
         string RazonSocialSession = "BANCO DE SAN JUAN S.A";
 
 
@@ -133,6 +136,8 @@ namespace Micrositio_Acreditacion.Controllers
                         //LA MILAGROSA S.A.   30507164303
                         //HUARPES S.R.L.    30681670595
 
+
+                        // -------------------------------------------------------------comentar o descomentar para testing
                         Cuit = "30500009442",
                         RazonSocial = "BANCO DE SAN JUAN S.A"
                     };
@@ -149,6 +154,8 @@ namespace Micrositio_Acreditacion.Controllers
                     // Cuit = "30681670595",
                     //RazonSocial = "HUARPES S.R.L."
 
+
+                    //---------------------------------------------------------------comentar o descomentar para testing
                     Cuit = "30500009442",
                     RazonSocial = "BANCO DE SAN JUAN S.A"
                 };
@@ -447,7 +454,7 @@ namespace Micrositio_Acreditacion.Controllers
             else if (file != null && file.ContentLength > 0)
                 try
                 {
-                    string path = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
+                    string path = Path.Combine(Server.MapPath("~/uploads/DocumentosSolicitud"),
                                                Path.GetFileName(registroNombre));
                     //string saveDir = Server.MapPath("~/uploads/");
                     file.SaveAs(path);
@@ -475,9 +482,18 @@ namespace Micrositio_Acreditacion.Controllers
                         }
 
                         var tipoCueExcel = ws.Cells[3, 2].Value.ToString();
-                        var sucExcel = ws.Cells[4, 2].Value.ToString();
-                        var nroCueExcel = ws.Cells[5, 2].Value.ToString();
+                        //someString = someString.PadLeft(8, '0');
+                        var sucExcel = ws.Cells[4, 2].Value.ToString().PadLeft(3,'0');
+                        var nroCueExcel = ws.Cells[5, 2].Value.ToString().PadLeft(6,'0');
                         var digVerExcel = ws.Cells[6, 2].Value.ToString();
+                        //checkea datos cuenta de la cabecera que no esten vacios
+
+                        if ((tipoCueExcel == "") ||( sucExcel == "") ||(digVerExcel== "") ||(nroCueExcel == ""))
+                        {
+                            ViewBag.Message = "Los datos de la cuenta se encuentran incompletos.";
+                            myFileInfo.Delete();
+                            return View("IngresoSolicitudView");
+                        }
                         ws.DeleteRow(1, 9, true);
 
                         var numeroCuenta = tipoCueExcel + sucExcel + nroCueExcel + digVerExcel;
@@ -487,7 +503,7 @@ namespace Micrositio_Acreditacion.Controllers
                         //paso 2 guardar primera parte del excel
                         da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, path,numeroCuenta,nombreArchivo,0,"");
                         //nuevo archivo para procesar contenido(solo los empleados)
-                        string pathCopia = Path.Combine(Server.MapPath("~/DocumentosSolicitud"),
+                        string pathCopia = Path.Combine(Server.MapPath("~/uploads/DocumentosSolicitud"),
                                             Path.GetFileName("copia" +registroNombre ));
                         pack.SaveAs(new FileInfo(pathCopia));
                         var copiaExcel = new FileInfo(pathCopia);
@@ -500,6 +516,7 @@ namespace Micrositio_Acreditacion.Controllers
                     }
 
                     ViewBag.Message = "Archivo guardado exitosamente.";
+                    return View("IngresoSolicitudView");
 
                   
                 }
@@ -509,9 +526,9 @@ namespace Micrositio_Acreditacion.Controllers
                 }
             else
             {
-                ViewBag.Message = "No hay archivo especificado";
+                ViewBag.Message = "No ha seleccionado un archivo para procesar";
             }
-            return View("IngresoSolicitudView");
+            return View("SeleccionarOrdenView");
         }
 
 

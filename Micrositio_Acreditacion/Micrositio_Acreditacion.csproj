@@ -288,6 +288,9 @@
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\button-materialize.js" />
+    <Content Include="scripts\buttons.dataTables.min.css" />
+    <Content Include="scripts\buttons.html5.min.js" />
+    <Content Include="scripts\buttons.print.min.js" />
     <Content Include="scripts\CargaIndividual.js" />
     <Content Include="scripts\CargaMasiva.js" />
     <Content Include="scripts\cargaMasiva2.js" />
@@ -321,6 +324,7 @@
     <Content Include="scripts\DataTables-1.10.20\js\dataTables.semanticui.min.js" />
     <Content Include="scripts\DataTables-1.10.20\js\jquery.dataTables.js" />
     <Content Include="scripts\DataTables-1.10.20\js\jquery.dataTables.min.js" />
+    <Content Include="scripts\dataTables.buttons.min.js" />
     <Content Include="scripts\datatables.css" />
     <Content Include="scripts\datatables.js" />
     <Content Include="scripts\datatables.min.css" />
@@ -360,6 +364,7 @@
     <Content Include="scripts\fontawesome\solid.min.js" />
     <Content Include="scripts\fontawesome\v4-shims.js" />
     <Content Include="scripts\fontawesome\v4-shims.min.js" />
+    <Content Include="scripts\exportacionesExcel.js" />
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
@@ -369,6 +374,7 @@
     <Content Include="ClassDiagram1.cd" />
     <Content Include="Files\MANUAL DE USUARIO- MICROSITIO DE ACREDITACCIONES.pdf" />
     <Content Include="Files\Modelo-excel-masivo.xlsx" />
+    <None Include="Properties\PublishProfiles\haberes.pubxml" />
     <None Include="Properties\PublishProfiles\microitioacreditacion.pubxml" />
     <None Include="Properties\PublishProfiles\Micrositio.pubxml" />
     <None Include="Properties\PublishProfiles\MicroSitioDebug.pubxml" />
@@ -380,19 +386,28 @@
     <Content Include="scripts\jquery-3.0.0.min.js" />
     <Content Include="scripts\jquery-3.0.0.slim.js" />
     <Content Include="scripts\jquery-3.0.0.slim.min.js" />
+    <Content Include="scripts\jquery-3.3.1.js" />
+    <Content Include="scripts\jquery.dataTables.min.css" />
+    <Content Include="scripts\jquery.dataTables.min.js" />
+    <Content Include="scripts\jszip.min.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\multiselect.js" />
+    <Content Include="scripts\pdfmake.min.js" />
     <Content Include="scripts\popper-utils.js" />
     <Content Include="scripts\popper-utils.min.js" />
     <Content Include="scripts\popper.js" />
     <Content Include="scripts\popper.min.js" />
     <Content Include="scripts\resultado.js" />
+    <Content Include="scripts\SolicitudExcel.js" />
+    <Content Include="scripts\tableToExcel.js" />
     <Content Include="scripts\umd\popper-utils.js" />
     <Content Include="scripts\umd\popper-utils.min.js" />
     <Content Include="scripts\umd\popper.js" />
     <Content Include="scripts\umd\popper.min.js" />
     <Content Include="scripts\validaciones.js" />
     <Content Include="scripts\validar.js" />
+    <Content Include="scripts\vfs_fonts.js" />
+    <Content Include="scripts\visualExcelNew.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

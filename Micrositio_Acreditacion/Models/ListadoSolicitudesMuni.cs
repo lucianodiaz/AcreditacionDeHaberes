@@ -12,6 +12,9 @@ namespace Micrositio_Acreditacion.Models
         public string cuenta { get; set; }
         public string fecha { get; set; }
         public string nombreArchivo { get; set; }
+        public string total { get; set; }
+        public string estado { get; set; }
+
 
     }
 }

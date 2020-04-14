@@ -13,5 +13,6 @@ namespace Micrositio_Acreditacion.Models
         public string celular { get; set; }
         public string compcel { get; set; }
         public string email { get; set; }
+        public string estadoDet { get; set; }
     }
 }

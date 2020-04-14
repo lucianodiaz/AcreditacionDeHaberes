@@ -1163,7 +1163,7 @@ namespace Micrositio_Acreditacion.Models
             switch (selector)
             {
                 case 0:
-                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha,nombreArchivo ,cuenta, selector);
+                    CMD = string.Format("exec sp_importarODE '{0}','{1}','{2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha,nombreArchivo ,cuenta, selector);
                     DataSet ds = Utilidades.Exec(CMD);
                     break;
                 case 1:
@@ -1229,7 +1229,7 @@ namespace Micrositio_Acreditacion.Models
 
 
                     }
-                    CMD = string.Format("exec SP_municipalidad '{0}','{1}','{2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha, nombreArchivo, cuenta, selector);
+                    CMD = string.Format("exec sp_importarODE '{0}','{1}','{2}','{3}','{4}','{5}'", cuitEmpresa, rutaArchivo, fecha, nombreArchivo, cuenta, selector);
                     DataSet ds1 = Utilidades.Exec(CMD);
 
                     break;
@@ -1255,7 +1255,9 @@ namespace Micrositio_Acreditacion.Models
                         cuit = ds.Tables[0].Rows[i]["cuitEmpresa"].ToString(),
                         cuenta = ds.Tables[0].Rows[i]["cuenta"].ToString(),
                         fecha = ds.Tables[0].Rows[i]["fechaSubida"].ToString(),
-                        nombreArchivo = ds.Tables[0].Rows[i]["nombreArchivo"].ToString()
+                        nombreArchivo = ds.Tables[0].Rows[i]["nombreArchivo"].ToString(),
+                        total = ds.Tables[0].Rows[i]["total"].ToString(),
+                        estado = ds.Tables[0].Rows[i]["estado"].ToString()
                     };
                     listNew.Add(list);
                 }
@@ -1290,7 +1292,8 @@ namespace Micrositio_Acreditacion.Models
                         importe = ds.Tables[0].Rows[i]["importe"].ToString(),
                         celular = ds.Tables[0].Rows[i]["celular"].ToString(),
                         compcel = ds.Tables[0].Rows[i]["celComp"].ToString(),
-                        email = ds.Tables[0].Rows[i]["email"].ToString()
+                        email = ds.Tables[0].Rows[i]["email"].ToString(),
+                        estadoDet = ds.Tables[0].Rows[i]["estado"].ToString()
                     };
                     listNew.Add(list);
                 }

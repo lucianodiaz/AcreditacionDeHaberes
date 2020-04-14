@@ -60,7 +60,7 @@
                             <div class="col-3 text-center">
                                 <div class="col-3 text-center">
                                     <b style="font-size: 16px;" id="TotEmpm" hidden=""></b>
-                                    <a class="btn btn-warning rounded float-left" href="@Url.Action("SeleccionarConvenioView","Home")">Volver</a>
+                                    <a class="btn btn-warning rounded float-left" id="btnVolverSol" href="@Url.Action("SeleccionarOrdenView","Home")">Volver</a>
                                 </div>
                                 <div class="col-3 text-center">
                                     <b style="font-size: 16px;" id="TotImportem" hidden=""></b>
@@ -78,7 +78,7 @@
                             <div class="offset-md-2 col-2 text-right">
                                 <button class="btn btn-warning text-right boton1" data-toggle="modal" data-target="#previewedit-modal-grid" id="boton1" hidden="">siguiente</button>
                                 <button class="btn btn-warning text-right boton2" hidden="" id="boton2" form="excelForm">bonton 2 </button>
-                                <a class=" btn d-inline" data-toggle="modal" data-target="#help-modal-grid">Ayuda</a>
+                                
 
                             </div>
                         </div>
@@ -120,6 +120,8 @@
 
             window.onload = function () {
                 alert("@ViewBag.Message");
+                document.getElementById("btnVolverSol").click();
+               
             };
     </script>
 }
