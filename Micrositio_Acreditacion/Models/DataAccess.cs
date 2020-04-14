@@ -1060,7 +1060,7 @@ namespace Micrositio_Acreditacion.Models
 
         public void GenerarTxtMunicipalidad(string idArchivo, string cuil, string nombreArchivo)
         {
-            string CMD = string.Format("exec '{0}','{1}'",idArchivo,cuil);
+            string CMD = string.Format("exec ODE_sp_GenerarArchivo '{0}','{1}'", idArchivo,cuil);
             ProcesoGenerarTxt(CMD, nombreArchivo);
         }
 
