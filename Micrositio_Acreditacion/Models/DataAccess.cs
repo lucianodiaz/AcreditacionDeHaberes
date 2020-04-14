@@ -1263,13 +1263,7 @@ namespace Micrositio_Acreditacion.Models
             {
                 var list = new ListadoSolicitudesMuni()
                 {
-                    id = Convert.ToInt32(ds.Tables[0].Rows[i]["id"]),
-                    cuit = ds.Tables[0].Rows[i]["cuitEmpresa"].ToString(),
-                    cuenta = ds.Tables[0].Rows[i]["cuenta"].ToString(),
-                    fecha = ds.Tables[0].Rows[i]["fechaSubida"].ToString(),
-                    nombreArchivo = ds.Tables[0].Rows[i]["nombreArchivo"].ToString(),
-                    total = ds.Tables[0].Rows[i]["total"].ToString(),
-                    estado = ds.Tables[0].Rows[i]["estado"].ToString()
+                    id = Convert.ToInt32(ds.Tables[0].Rows[i]["id"])
                 };
                 listNew.Add(list);
             }
