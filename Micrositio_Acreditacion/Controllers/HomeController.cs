@@ -512,7 +512,11 @@ namespace Micrositio_Acreditacion.Controllers
                         //paso 3 guardar los empleados 
 
                         da.ProcesoMunicipalidad(cuitEmpresa, fechaArchivo, pathCopia, numeroCuenta,nombreArchivo,1, "."+fileExt);
+
+
                        copiaExcel.Delete(); //borra archivo creado
+
+                        da.GenerarTxtMunicipalidad(da.GetIdArchivo(path),cuitEmpresa,nombreArchivo);
                     }
 
                     ViewBag.Message = "Archivo guardado exitosamente.";

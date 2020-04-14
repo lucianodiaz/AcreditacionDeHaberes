@@ -1026,20 +1026,16 @@ namespace Micrositio_Acreditacion.Models
         }
 
 
-        /// <summary>Genera el archivo txt</summary>
-        /// <example>
-        ///   <code>codigo</code>
-        /// </example>
-        public void GenerarTxt()
-        { 
-            string CMD = string.Format("Exec SP_ArchivoSalida '{0}','{1}','{2}'", Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion(), Global.getFecha());
+        public void ProcesoGenerarTxt(string CMD, string nombreArchivo)
+        {
             DataSet ds = Utilidades.Exec(CMD);
-            string nombreArchivo = "";
+            //string nombreArchivo = "";
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-
-                nombreArchivo = ds.Tables[0].Rows[0]["Titulo"].ToString() + ".TXT";
-
+                if(nombreArchivo == "")
+                {
+                    nombreArchivo = ds.Tables[0].Rows[0]["Titulo"].ToString() + ".TXT";
+                }
                 if (!ds.Tables[0].Columns.Contains("Registro"))
                 {
                     log.Error("No se encuentra la columna REGISTRO");
@@ -1059,7 +1055,26 @@ namespace Micrositio_Acreditacion.Models
                 HttpContext.Current.Response.WriteFile(tmpFile);
                 HttpContext.Current.Response.End();
             }
-    }
+        }
+
+
+        public void GenerarTxtMunicipalidad(string idArchivo, string cuil, string nombreArchivo)
+        {
+            string CMD = string.Format("exec '{0}','{1}'",idArchivo,cuil);
+            ProcesoGenerarTxt(CMD, nombreArchivo);
+        }
+
+        /// <summary>Genera el archivo txt</summary>
+        /// <example>
+        ///   <code>codigo</code>
+        /// </example>
+        /// 
+        public void GenerarTxt()
+        { 
+            string CMD = string.Format("Exec SP_ArchivoSalida '{0}','{1}','{2}'", Global.GetEmpresa().CodEmp, Global.GetGlobalAcreditacion(), Global.getFecha());
+
+            ProcesoGenerarTxt(CMD, "");
+        }
 
 
 
@@ -1233,10 +1248,33 @@ namespace Micrositio_Acreditacion.Models
                     DataSet ds1 = Utilidades.Exec(CMD);
 
                     break;
-
                 default:
                     break;
             }
+        }
+
+
+        public string GetIdArchivo(string path)
+        {
+            string CMD = string.Format("select top 1 id from SolicitudArchivos where rutaArchivo = '{0}'", path);
+            DataSet ds = Utilidades.Exec(CMD);
+            List<ListadoSolicitudesMuni> listNew = new List<ListadoSolicitudesMuni>();
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var list = new ListadoSolicitudesMuni()
+                {
+                    id = Convert.ToInt32(ds.Tables[0].Rows[i]["id"]),
+                    cuit = ds.Tables[0].Rows[i]["cuitEmpresa"].ToString(),
+                    cuenta = ds.Tables[0].Rows[i]["cuenta"].ToString(),
+                    fecha = ds.Tables[0].Rows[i]["fechaSubida"].ToString(),
+                    nombreArchivo = ds.Tables[0].Rows[i]["nombreArchivo"].ToString(),
+                    total = ds.Tables[0].Rows[i]["total"].ToString(),
+                    estado = ds.Tables[0].Rows[i]["estado"].ToString()
+                };
+                listNew.Add(list);
+            }
+            //return listNew;
+            return listNew[0].id.ToString();
         }
 
 
