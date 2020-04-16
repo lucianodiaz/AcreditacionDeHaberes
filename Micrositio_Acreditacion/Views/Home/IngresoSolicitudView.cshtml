@@ -26,7 +26,8 @@
             </nav>
             <h5 class="text-center ">Cargue su orden de extraccion</h5>
             <br />
-            <p class="text-muted text-center">El archivo debe ser EXCEL</p>
+            <p class="text-muted text-center">El archivo debe ser EXCEL. <br /> Podrá descargar de <u> @Html.ActionLink("aquí", "archivoExcel", "Empleado", new { fileName = "plantilla" }, new { @class = "text-warning", @title = "Manual de usuario" })</u> un modelo de Excel para comenzar a cargar su registros.</p>
+      
             <div class="tab-content ">
               
 
@@ -41,7 +42,7 @@
                                     <ul class="list-unstyled pricing-content"></ul>
                                     <form action="@Url.Action("SolicitudGuardarArchivo", "Home")" method="post" id="" enctype="multipart/form-data"  >
                                         <input type="file" name="file" id="fileSol"/><br />
-                                        <input type="submit" class="btn btn-dark rounded  mt-5"  value="Guardar" onclick="return ValidarSolicitud();">
+                                        <input type="submit" class="btn btn-dark rounded  mt-5" data-toggle="" data-target="#staticBackdrop" value="Guardar" onclick="return ValidarSolicitud();">
                                         <br />
                                         
                                     </form>
@@ -114,14 +115,39 @@
 
 
 
+<!-- Modal aceptar-->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+           
+            <div class="modal-body">
+                <div class="col">
+                    <form action="">
+                        <h5>Atención se va a generar el archivo de órdenes de extracción para ser presentado a través de <u><b>BSJ EMPRESAS</b></u></h5>
+                        <table id="table2e" class="table"></table>
+                      
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                
+                <a class="btn btn-warning rounded " href='@Url.Action("SeleccionarOrdenView","Home")'>Volver a la página anterior</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @if (ViewBag.Message != null)
 {
     <script type="text/javascript">
 
             window.onload = function () {
-                alert("@ViewBag.Message");
-                document.getElementById("btnVolverSol").click();
-               
+
+                bootbox.alert("@ViewBag.Message");
+              
+
             };
     </script>
 }

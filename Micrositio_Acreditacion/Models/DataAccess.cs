@@ -1060,8 +1060,10 @@ namespace Micrositio_Acreditacion.Models
 
         public void GenerarTxtMunicipalidad(string idArchivo, string cuil, string nombreArchivo)
         {
+            // cambio extencion del nombre del archivo
+            var filename = Path.ChangeExtension(nombreArchivo, ".txt");
             string CMD = string.Format("exec ODE_sp_GenerarArchivo '{0}','{1}'", idArchivo,cuil);
-            ProcesoGenerarTxt(CMD, nombreArchivo);
+            ProcesoGenerarTxt(CMD, filename);
         }
 
         /// <summary>Genera el archivo txt</summary>

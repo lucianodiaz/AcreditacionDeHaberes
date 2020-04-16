@@ -957,6 +957,11 @@ namespace Micrositio_Acreditacion.Controllers
             return new FilePathResult(string.Format(@"~\Files\{0}", fileName + ".pdf"), "application/pdf");
         }
 
+        public FilePathResult plantillaEXCEL(string fileName)
+        {
+            return new FilePathResult(string.Format(@"~\Files\{0}", fileName + ".xlsx"), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
         /// <summary>
         /// Archivoes the excel.
         /// </summary>

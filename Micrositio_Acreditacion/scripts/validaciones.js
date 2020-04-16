@@ -421,15 +421,21 @@ function validarCBUNew(cbu) {
         //alert(archivo);
         
         if (archivo != null) {
+            myVar = setTimeout(showModal, 5000);
             
-            
+           
 
             return true
         }
         else {
             alert("No ha seleccionado un archivo valido vuelva a cargar el archivo.");
+            //$("#staticBackdrop").modal();
             return false;
         }
+    }
+
+    function showModal() {
+        $("#staticBackdrop").modal();
     }
 
 

@@ -1137,6 +1137,7 @@
             <example>
               <code>codigo</code>
             </example>
+            
         </member>
         <member name="M:Micrositio_Acreditacion.Models.DataAccess.GetReporte(System.String)">
             <summary>Gets the reporte.</summary>

@@ -445,6 +445,7 @@ namespace Micrositio_Acreditacion.Controllers
 
             var supportedTypes = new[] { "xls", "xlsx" };//tipos de archivo
             var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+            fileExt = fileExt.ToLower();
             if (!supportedTypes.Contains(fileExt))
             {
                 ViewBag.Message = "El archivo es inválida - deben ser formato EXCEL";
@@ -472,31 +473,36 @@ namespace Micrositio_Acreditacion.Controllers
                         
                         var ws = pack.Workbook.Worksheets.FirstOrDefault();
                         //datos de la cabecera
-                        var cuilExcel = ws.Cells[2, 2].Value.ToString();
+                        //var cuilExcel = ws.Cells[2, 2].Value.ToString();
 
-                        if (cuilExcel != cuitEmpresa)
-                        {
-                            ViewBag.Message = "El cuit de la empresa y del documento no coinciden.";
-                            myFileInfo.Delete();
-                            return View("IngresoSolicitudView");
-                        }
+                        //if (cuilExcel != cuitEmpresa)
+                        //{
+                        //    ViewBag.Message = "El cuit de la empresa y del documento no coinciden.";
+                        //    myFileInfo.Delete();
+                        //    return View("IngresoSolicitudView");
+                        //}
 
-                        var tipoCueExcel = ws.Cells[3, 2].Value.ToString();
+                        var DNI = ws.Cells[3, 1].Value.ToString();
                         //someString = someString.PadLeft(8, '0');
-                        var sucExcel = ws.Cells[4, 2].Value.ToString().PadLeft(3,'0');
-                        var nroCueExcel = ws.Cells[5, 2].Value.ToString().PadLeft(6,'0');
-                        var digVerExcel = ws.Cells[6, 2].Value.ToString();
+                        var nombre = ws.Cells[3, 2].Value.ToString();
+                        var importe = ws.Cells[3, 3].Value.ToString();
+                        var celular = ws.Cells[3, 4].Value.ToString();
+                        var compCel = ws.Cells[3, 5].Value.ToString();
+                        compCel = compCel.TrimEnd();
+                        var email = ws.Cells[3, 6].Value.ToString();
+                        //var nroCueExcel = ws.Cells[5, 2].Value.ToString().PadLeft(6,'0');
+                        //var digVerExcel = ws.Cells[6, 2].Value.ToString();
                         //checkea datos cuenta de la cabecera que no esten vacios
 
-                        if ((tipoCueExcel == "") ||( sucExcel == "") ||(digVerExcel== "") ||(nroCueExcel == ""))
+                        if ((DNI.ToUpper() != "DNI") || (importe.ToUpper() != "IMPORTE") || (nombre.ToUpper() != "APELLIDO Y NOMBRE") || (celular.ToUpper() != "CELULAR") || (compCel.ToUpper() != "COMPAÑÍA CELULAR") || (email.ToUpper() != "EMAIL"))
                         {
-                            ViewBag.Message = "Los datos de la cuenta se encuentran incompletos.";
+                            ViewBag.Message = "El formato de archivo no coincide con el formato solicitado.";
                             myFileInfo.Delete();
                             return View("IngresoSolicitudView");
                         }
-                        ws.DeleteRow(1, 9, true);
+                        ws.DeleteRow(1, 1, true);
 
-                        var numeroCuenta = tipoCueExcel + sucExcel + nroCueExcel + digVerExcel;
+                        var numeroCuenta = "";
 
 
                         //aca tengo que guardar los datos todos los var
@@ -526,13 +532,14 @@ namespace Micrositio_Acreditacion.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                    var error = ex.Message.ToString();
+                    ViewBag.Message = "ERROR: la operacíon no se pudo procesar, verifique que el archivo tenga el formato correcto" ;
                 }
             else
             {
                 ViewBag.Message = "No ha seleccionado un archivo para procesar";
             }
-            return View("SeleccionarOrdenView");
+            return View("IngresoSolicitudView");
         }
 
 
